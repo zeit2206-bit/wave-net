@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logic Gate Network</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="gates.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 5 · Experiment · gate_net.py</span>
+  <h1>Using the computer's own unit: logic gates</h1>
+  <p class="lead">No neurons, no decimal numbers. Just a circuit of tiny on/off switches.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Logic gate</strong></td><td>Hardware / idea</td><td>A tiny rule: “light on only if both switches are on”</td><td>32,000 of them</td></tr><tr><td><strong>16 gate types</strong></td><td>A count</td><td>All the possible rules for two switches</td><td>Training picks one per spot</td></tr><tr><td><strong>Thresholds</strong></td><td>Numbers</td><td>Asking “is this pixel a bit dark? very dark?” instead of measuring exactly</td><td>2 per pixel → 1,568 bits</td></tr><tr><td><strong>Blend (softmax)</strong></td><td>Math</td><td>A dimmer that slowly slides between choices before you lock one in</td><td>How gates can train</td></tr><tr><td><strong>Popcount</strong></td><td>Code</td><td>Counting raised hands in each of 10 groups</td><td>How the answer is chosen</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block idea">
+  <span class="label">The idea</span>
+  <p>A computer's simplest unit is the <strong>bit</strong> (0 or 1). Bits are combined by <mark>logic gates</mark>:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Gate</th><th>Output is 1 when…</th><th>In plain words</th></tr></thead>
+    <tbody>
+      <tr><td>AND</td><td>both inputs are 1</td><td>"only if both"</td></tr>
+      <tr><td>OR</td><td>at least one is 1</td><td>"either one"</td></tr>
+      <tr><td>XOR</td><td>exactly one is 1</td><td>"one or the other, not both"</td></tr>
+      <tr><td>NOT</td><td>the input is 0</td><td>"the opposite"</td></tr>
+    </tbody>
+  </table></div>
+  <p>A normal network uses millions of gates just to <em>imitate</em> one decimal multiplication. What if the network <strong>were</strong> the gates?</p>
+</section>
+
+<section class="block test">
+  <span class="label">What we built</span>
+  <div class="steps">
+    <div class="step"><p><strong>Digits become bits.</strong> Each pixel answers 2 yes/no questions: "a bit dark?" and "very dark?". Each image = 1,568 bits.</p></div>
+    <div class="step"><p><strong>A circuit of 32,000 gates</strong> in 4 layers. Each gate takes 2 bits from the layer before. The wiring is random and fixed.</p></div>
+    <div class="step"><p><strong>Training picks each gate's type</strong> from the 16 possible 2-input gates. During training each spot is a "blend" of all 16, so it can be nudged gradually. At the end, each spot is locked to its best gate.</p></div>
+    <div class="step"><p><strong>Counting gives the answer.</strong> The last layer is split into 10 groups, one per digit. The group with the most 1s wins.</p></div>
+  </div>
+  <p class="cap">Method from Petersen and colleagues, "Deep Differentiable Logic Gate Networks", NeurIPS 2022.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result</span>
+  <div class="bars">
+    <div class="bar"><span>Light</span><div class="t"><i style="width:90.9%;--c:#b26a12"></i></div><b>90.9%</b></div>
+    <div class="bar"><span>Light + camera</span><div class="t"><i style="width:91.5%;--c:#b26a12"></i></div><b>91.5%</b></div>
+    <div class="bar"><span>Logic gates<small>10 passes, 339 s</small></span><div class="t"><i style="width:92.8%;--c:#2f7a4f"></i></div><b>92.8%</b></div>
+    <div class="bar"><span>Standard network</span><div class="t"><i style="width:95.3%;--c:#1e5a7a"></i></div><b>95.3%</b></div>
+  </div>
+  <ul>
+    <li><strong>Gates beat light</strong>, because they have the if-then step built in.</li>
+    <li>After locking, the network runs on <strong>pure logic</strong>: no multiplication at all, same 92.8%.</li>
+    <li>Training mostly chose simple gates: pass a bit through, flip it, XOR, NOR, OR.</li>
+    <li>Size: about <strong>125 KB</strong>, vs. ~460 KB for the standard network.</li>
+  </ul>
+</section>
+
+<section class="block warn">
+  <span class="label">But…</span>
+  <ul>
+    <li>Not a fair fight on accuracy: gates got 10 passes, the standard network 3.</li>
+    <li>On this laptop, gates answered <strong>185× slower</strong> (3,400 vs. 628,000 images/s). Why that happened, and how we fixed it, is the next step.</li>
+  </ul>
+</section>
+
+<section class="block idea">
+  <span class="label">Does it work for other data?</span>
+  <p>Yes, if the data can become yes/no questions: "age over 30?", "contains the word X?", "loud in this frequency band?". It suits simple decisions on tiny devices; it struggles with language and fine numbers.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

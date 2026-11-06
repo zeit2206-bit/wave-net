@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fairness Check and Verdict</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="fairness.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 8 · Experiment · int8_net.py</span>
+  <h1>Fairness check and verdict</h1>
+  <p class="lead">We tuned the gates heavily but left the standard network untouched. Is the comparison fair?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>32-bit vs. 8-bit</strong></td><td>Storage format</td><td>Writing a price as $12.3456789 vs. $12</td><td>Same answer, 4× less space</td></tr><tr><td><strong>Quantization</strong></td><td>Math + code</td><td>Rounding numbers to fewer digits</td><td>Here and in steps 9–11</td></tr><tr><td><strong>Tuned library</strong></td><td>Code</td><td>A factory optimized for decades vs. our home workshop</td><td>Why my 8-bit was slower</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block test">
+  <span class="label">The test</span>
+  <p>The usual industry way to speed up a standard network is <strong>8-bit numbers</strong> (whole numbers from −127 to 127) instead of 32-bit decimals. We converted the trained 97.3% network to 8-bit and compiled it.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th>Correct</th><th>Images/s</th><th>Size</th></tr></thead>
+    <tbody>
+      <tr><td>Standard, 32-bit</td><td class="num">97.3%</td><td class="num">852,791</td><td class="num">~462 KB</td></tr>
+      <tr><td>Standard, 8-bit (my code)</td><td class="num">97.3%</td><td class="num">510,136</td><td class="num">~116 KB</td></tr>
+      <tr><td>Gates, organized</td><td class="num">95.0%</td><td class="num">2,593,092</td><td class="num">66 KB</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>8-bit kept the accuracy</strong> and made it 4× smaller.</li>
+    <li>My 8-bit code was <em>slower</em>, but that's my code (one image at a time), not 8-bit itself.</li>
+  </ul>
+</section>
+
+<section class="block warn">
+  <span class="label">Honest reading</span>
+  <p>Well-tuned 8-bit libraries usually run 2–4× faster than 32-bit on CPUs. That could <strong>tie or beat</strong> the gates. So the gates' speed lead is real against the normal network, but probably not against a tuned 8-bit one. We didn't install such a library to settle it.</p>
+</section>
+
+<section class="key">Verdict: is gate-net better than the standard net? No, not overall.</section>
+
+<section class="plain">
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Winner</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Accuracy</td><td><b>Standard</b> (97.3% vs 95.0%)</td><td>Decimal weights can express fine shades; a gate is just on/off with fixed random wiring.</td></tr>
+      <tr><td>Training</td><td><b>Standard</b> (11 s vs ~49 min)</td><td>Gates train as a slow "blend" of 16 types.</td></tr>
+      <tr><td>Speed</td><td><b>Gates</b> vs normal standard (2.9×); unclear vs tuned 8-bit</td><td>A gate is simpler than a multiply-add; the standard net has decades of tuning.</td></tr>
+      <tr><td>Size</td><td><b>Gates</b> (66 KB)</td><td>Most trained gates were removable.</td></tr>
+      <tr><td>Hardware needs</td><td><b>Gates</b></td><td>Only AND/OR/XOR: even the tiniest chip has them.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block idea">
+  <span class="label">So were bits the wrong answer?</span>
+  <p>No. <strong>Both networks already run on bits</strong>: a standard network just uses 32 bits per number. The real question is <em>how many bits per number</em>. One bit loses too much nuance. The industry's sweet spot is around 2–8 bits, and Microsoft's BitNet (2024) goes down to about 1.6 bits: weights of only −1, 0 or +1. That's the next step.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

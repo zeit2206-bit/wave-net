@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Smaller Llama</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="llama-smaller.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 13 · Experiment · llama/gptq_test.py, llama/save_q4.py</span>
+  <h1>Our own smaller Llama</h1>
+  <p class="lead">Ternary didn't survive, but the same "watch real sentences" method made a 4-bit Llama that is smaller, faster and answers the same. We saved it and it now runs in Ollama.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GPTQ-style rounding</strong></td><td>A method (code + math)</td><td>Rounding prices one by one and adjusting the rest so the bill's total still matches</td><td>How we made the 4-bit weights</td></tr>
+      <tr><td><strong>Example sentences</strong></td><td>Data</td><td>Practice questions used to check each floor of the factory</td><td>8,000 words from our own conversation log</td></tr>
+      <tr><td><strong>Q4_0</strong></td><td>A file format</td><td>Prices in 4-bit whole numbers (−8 to 7), one exchange rate per 32</td><td>The format Ollama reads</td></tr>
+      <tr><td><strong>Modelfile</strong></td><td>A small text file</td><td>A label on a box: "the model is in this file, talk to it like this"</td><td><code>llama/out/Modelfile</code></td></tr>
+      <tr><td><strong>Words per second</strong></td><td>A measurement</td><td>How fast it types its answer</td><td>Speed column</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block test">
+  <span class="label">What we did</span>
+  <div class="steps">
+    <div class="step"><p><strong>Rounded to 4 bits, watching sentences.</strong> Each weight was rounded in turn, and the others were nudged so each layer's output stayed close to the original's. Layers were done in order, floor by floor. ~15 minutes.</p></div>
+    <div class="step"><p><strong>Wrote a new model file</strong> in the standard 4-bit format. Only the 112 layer matrices changed; the word table and the rest were copied. Ollama's original file was only read.</p></div>
+    <div class="step"><p><strong>Checked the file</strong> by loading it back in our own code: same score as before saving (10.47).</p></div>
+    <div class="step"><p><strong>Added it to Ollama</strong> (with your OK) as <code>llama3.2-1b-gptq-q4</code>, using the original's chat format.</p></div>
+  </div>
+</section>
+
+<section class="block result">
+  <span class="label">Result · quality (our perplexity test, lower is better)</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th class="num">Bits/weight</th><th class="num">Perplexity</th><th>"The capital of France is…"</th></tr></thead>
+    <tbody>
+      <tr><td>Our download (8-bit)</td><td class="num">8.5</td><td class="num">9.85</td><td>Paris. The Eiffel Tower is</td></tr>
+      <tr><td>Plain 4-bit rounding</td><td class="num">4.5</td><td class="num">11.79</td><td>Paris. Paris is a city located in</td></tr>
+      <tr class="win"><td>4-bit, watching sentences (saved)</td><td class="num">4.5</td><td class="num">10.47</td><td>Paris. The capital of France is Paris</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block result">
+  <span class="label">Result · running in Ollama</span>
+  <div class="bars">
+    <div class="bar"><span>Disk · original</span><div class="t"><i style="width:100%;--c:#8d9893"></i></div><b>1.3 GB</b></div>
+    <div class="bar"><span>Disk · ours</span><div class="t"><i style="width:64%;--c:#2f7a4f"></i></div><b>0.83 GB</b></div>
+    <div class="bar"><span>Memory · original</span><div class="t"><i style="width:100%;--c:#8d9893"></i></div><b>1.5 GB</b></div>
+    <div class="bar"><span>Memory · ours</span><div class="t"><i style="width:67%;--c:#2f7a4f"></i></div><b>1.0 GB</b></div>
+    <div class="bar"><span>Speed · original</span><div class="t"><i style="width:58%;--c:#8d9893"></i></div><b>20–22 w/s</b></div>
+    <div class="bar"><span>Speed · ours</span><div class="t"><i style="width:100%;--c:#2f7a4f"></i></div><b>30–36 w/s</b></div>
+  </div>
+  <p><strong>Same answers</strong> on both test prompts, word for word ("Paris." and the Rayleigh-scattering explanation of the blue sky).</p>
+</section>
+
+<section class="block why">
+  <span class="label">Why it's faster, not just smaller</span>
+  <p>To write each word, the model reads all its weights from memory. That reading, not the math, is the slow part. Half the bits means half the reading, like carrying a lighter backpack up the same stairs: about 1.6× more words per second.</p>
+</section>
+
+<section class="block warn">
+  <span class="label">Keep in mind</span>
+  <ul>
+    <li>Quality was checked on one text and two prompts. Longer use could show small differences.</li>
+    <li>Ollama's own ready-made 4-bit versions use similar tricks; ours is not claimed to beat them, but we built it ourselves and know exactly what's inside.</li>
+    <li>Use it: <code>ollama run llama3.2-1b-gptq-q4</code>. Remove it: <code>ollama rm llama3.2-1b-gptq-q4</code>.</li>
+    <li>The same file could run in an Android app via llama.cpp (~1 GB memory).</li>
+  </ul>
+</section>
+
+</main><script src="nav.js"></script></body></html>

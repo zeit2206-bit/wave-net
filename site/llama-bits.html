@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Llama With Fewer Bits</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="llama-bits.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 11 · Experiment · llama/quant_test.py</span>
+  <h1>Llama with fewer bits</h1>
+  <p class="lead">Our digit network worked with −1/0/+1. Can a real language model be squeezed the same way?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Perplexity</strong></td><td>A measurement</td><td>How many words the model is hesitating between; 10 is confident, 18,000 is lost</td><td>Lower is better</td></tr><tr><td><strong>k-bit (8, 6, 4, 3)</strong></td><td>Storage format</td><td>Writing each price with fewer digits</td><td>4 bits is the safe floor</td></tr><tr><td><strong>Block of 32</strong></td><td>Storage trick</td><td>Every page of prices gets its own exchange rate</td><td>Keeps rounding small</td></tr><tr><td><strong>Fragile vs. tough layers</strong></td><td>Measured idea</td><td>A mistake on floor 1 of the factory passes through 15 more floors; on floor 16 it’s caught last</td><td>Test B</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block test">
+  <span class="label">How we measured</span>
+  <p>We rounded Llama's weights to fewer bits and measured <mark>perplexity</mark>: how "surprised" the model is by each next word of a normal English text. <strong>Lower is better.</strong> About 10 means it's choosing among roughly 10 likely words; thousands means it's lost.</p>
+  <p>We also asked each version to continue "The capital of France is", to see the damage in plain words.</p>
+  <p class="cap">Only the 112 layer matrices were changed; the word table stayed as it was. One test text, one prompt.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Test A · the whole model with fewer bits</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th>Perplexity</th><th>"The capital of France is…"</th></tr></thead>
+    <tbody>
+      <tr><td>Original (8-bit)</td><td class="num">9.85</td><td>Paris. The Eiffel Tower is</td></tr>
+      <tr><td>6-bit</td><td class="num">9.70</td><td>Paris. The Eiffel Tower is</td></tr>
+      <tr class="win"><td>4-bit</td><td class="num">11.79</td><td>Paris. Paris is a city located in</td></tr>
+      <tr><td>3-bit</td><td class="num">31.39</td><td>Paris, but the capital of France is</td></tr>
+      <tr><td>Ternary (scale per 32 weights)</td><td class="num">18,052</td><td>,,,,,,,,</td></tr>
+      <tr><td>Ternary (one scale per matrix)</td><td class="num">16,789</td><td>........</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>6–8 bits:</strong> no loss. <strong>4 bits:</strong> small loss — the practical floor.</li>
+    <li><strong>3 bits:</strong> clearly worse. <strong>Ternary:</strong> completely destroyed.</li>
+  </ul>
+</section>
+
+<section class="block result">
+  <span class="label">Test B · ternary in only some parts</span>
+  <div class="bars">
+    <div class="bar"><span>Only layer 15 (last)</span><div class="t"><i style="width:12%;--c:#2f7a4f"></i></div><b>15</b></div>
+    <div class="bar"><span>Last 4 layers</span><div class="t"><i style="width:15.4%;--c:#2f7a4f"></i></div><b>35</b></div>
+    <div class="bar"><span>Middle 4 layers</span><div class="t"><i style="width:15.9%;--c:#2f7a4f"></i></div><b>39</b></div>
+    <div class="bar"><span>Attention only</span><div class="t"><i style="width:29.8%;--c:#b26a12"></i></div><b>971</b></div>
+    <div class="bar"><span>Only layer 0 (first)</span><div class="t"><i style="width:36%;--c:#a33d6b"></i></div><b>4,072</b></div>
+    <div class="bar"><span>First 4 layers</span><div class="t"><i style="width:41.9%;--c:#a33d6b"></i></div><b>14,066</b></div>
+    <div class="bar"><span>Feed-forward only</span><div class="t"><i style="width:44.3%;--c:#a33d6b"></i></div><b>27,057</b></div>
+  </div>
+  <p class="cap">Perplexity, lower is better. Bars use a log scale so the small and huge numbers fit. Original model: 9.85.</p>
+</section>
+
+<section class="block why">
+  <span class="label">What it means</span>
+  <ul>
+    <li><strong>Early layers are fragile, late layers are tough.</strong> Ternary in layer 0 alone breaks the model; in layer 15 alone it barely matters. My explanation: an error in layer 0 passes through all 15 later layers and grows; an error in the last layer has nowhere to grow.</li>
+    <li><strong>Feed-forward is more fragile than attention.</strong> It holds most of the weights and much of the stored knowledge.</li>
+    <li><strong>A model must learn ternary while training.</strong> Our digit network was trained ternary and worked. Llama was trained with full precision, so its weights depend on fine detail that −1/0/+1 erases. That's why Microsoft trained BitNet ternary from the start.</li>
+  </ul>
+</section>
+
+<section class="block warn">
+  <span class="label">Keep in mind</span>
+  <p>One text and one prompt. Small differences (6-bit vs 8-bit) are noise. The big differences are clear, and they match published research.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

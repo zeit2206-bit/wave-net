@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Middle Ground</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="ternary.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 9 · Experiments · ternary_net.py, fast_ternary.py</span>
+  <h1>The middle ground: −1, 0, +1</h1>
+  <p class="lead">Keep the neurons (they train well), but give each weight only three possible values.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Ternary weight</strong></td><td>A number (3 values)</td><td>A vote: yes (+1), no (−1), abstain (0)</td><td>Every weight here</td></tr><tr><td><strong>Scale</strong></td><td>A number</td><td>One exchange rate that turns votes into real values</td><td>One per layer</td></tr><tr><td><strong>1.6 bits</strong></td><td>A size</td><td>How much space a 3-option choice takes</td><td>vs. 32 for standard</td></tr><tr><td><strong>Learned that way</strong></td><td>Idea</td><td>Training a choir to sing with only 3 notes vs. squeezing a song afterwards</td><td>Why it worked here but not on Llama</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block idea">
+  <span class="label">The idea</span>
+  <p>Each weight is <strong>−1, 0 or +1</strong> (times one shared scale per layer). That's about 1.6 bits per weight. Then "multiply" disappears:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Weight</th><th>What the neuron does with that input</th></tr></thead>
+    <tbody><tr><td class="num">+1</td><td>add it</td></tr><tr><td class="num">−1</td><td>subtract it</td></tr><tr><td class="num">0</td><td>skip it</td></tr></tbody>
+  </table></div>
+  <p>Training keeps a normal decimal copy of each weight to nudge, but every guess uses the rounded −1/0/+1 version, so the network <strong>learns to work with three values from the start</strong> (method from BitNet b1.58, Microsoft, 2024).</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result · accuracy, size, training</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th>Correct</th><th>Size</th><th>Training</th></tr></thead>
+    <tbody>
+      <tr><td>Gates (big, organized)</td><td class="num">95.0%</td><td class="num">66 KB</td><td class="num">~49 min</td></tr>
+      <tr class="win"><td>Ternary, 128 wide (same shape as standard)</td><td class="num">96.5%</td><td class="num">29 KB</td><td class="num">11 s</td></tr>
+      <tr><td>Ternary, 512 wide</td><td class="num">97.3%</td><td class="num">163 KB</td><td class="num">~1 min</td></tr>
+      <tr><td>Standard (32-bit)</td><td class="num">97.3%</td><td class="num">~462 KB</td><td class="num">11 s</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>Ternary 128 beats the gate network</strong> on accuracy, size and training time.</li>
+    <li><strong>Ternary 512 matches the standard network</strong> (97.3%) at about a third of its size.</li>
+    <li>About <strong>a third of the weights are 0</strong>, so they can be skipped.</li>
+  </ul>
+</section>
+
+<section class="block result">
+  <span class="label">Result · speed (add/subtract lists, compiled)</span>
+  <div class="bars">
+    <div class="bar"><span>Ternary 512</span><div class="t"><i style="width:6.4%;--c:#8d9893"></i></div><b>152,669/s</b></div>
+    <div class="bar"><span>Standard</span><div class="t"><i style="width:37.3%;--c:#1e5a7a"></i></div><b>890,853/s</b></div>
+    <div class="bar"><span>Ternary 128</span><div class="t"><i style="width:37.3%;--c:#2f7a4f"></i></div><b>891,019/s</b></div>
+    <div class="bar"><span>Gates (organized)</span><div class="t"><i style="width:100%;--c:#b26a12"></i></div><b>2,387,148/s</b></div>
+  </div>
+  <p><strong>Ternary 128 ties the standard network on speed</strong>, doing less work (79,000 adds/subtracts vs 118,000 multiply-adds per image), but reading from scattered memory places. The gates are still fastest.</p>
+</section>
+
+<section class="key">Best all-rounder: ternary 128 — smallest, trains in seconds, 96.5%, same speed as standard.</section>
+
+<section class="block warn">
+  <span class="label">Keep in mind</span>
+  <p>None of our versions got the decades of tuning NumPy's matrix library has. With equal tuning, ternary would likely gain the most, because add/subtract/skip fits the CPU's wide instructions well. That's an expectation, not a measurement.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

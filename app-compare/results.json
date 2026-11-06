@@ -1,0 +1,852 @@
+[
+  {
+    "case": "speak-start",
+    "app": "Speak Up",
+    "what": "Start a conversation (B1, travel)",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\n(nothing yet)\n\nStart the conversation: greet briefly and ask a first question about the topic.",
+    "model": "claude:sonnet",
+    "secs": 3.403,
+    "out": {
+      "message": "Hi there! Let's talk about travel. What is the most interesting place you have ever visited, and why did you like it?",
+      "suggestions": [
+        "The most interesting place I visited was Cusco in Peru, because the history and the mountains were amazing.",
+        "I loved Barcelona because the food was delicious, the beaches were beautiful, and the people were very friendly.",
+        "I haven't traveled much yet, but I really enjoyed visiting a small village near my hometown last year."
+      ],
+      "rephrase": null,
+      "keep": []
+    },
+    "error": null
+  },
+  {
+    "case": "speak-start",
+    "app": "Speak Up",
+    "what": "Start a conversation (B1, travel)",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\n(nothing yet)\n\nStart the conversation: greet briefly and ask a first question about the topic.",
+    "model": "ollama:llama3.2:1b",
+    "secs": 4.583,
+    "out": {
+      "message": "Hello! How's your trip so far?",
+      "suggestions": [
+        "Good morning, how's your trip going?"
+      ],
+      "rephrase": "Hi, I'm excited to hear about your travels so far, how's everything going?",
+      "keep": [
+        "Hi, I'm excited to hear about your travels so far, how's everything going?"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-start",
+    "app": "Speak Up",
+    "what": "Start a conversation (B1, travel)",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\n(nothing yet)\n\nStart the conversation: greet briefly and ask a first question about the topic.",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 4.863,
+    "out": {
+      "message": "Hello! What's your favorite travel destination?",
+      "suggestions": [
+        "If you like Paris, you might like:",
+        "The Eiffel Tower is very famous, you should read about it.",
+        "If you like Paris, you might like:",
+        "Maybe you should try: Paris in the winter."
+      ],
+      "rephrase": "Have you ever been to Paris?",
+      "keep": [
+        "Have you ever been to Paris?",
+        "Have you ever been to Paris?",
+        "Have you ever been to Paris?"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-b1",
+    "app": "Speak Up",
+    "what": "Reply + rephrase a B1 answer with mistakes",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\nYou: Hi! What was the last trip you really enjoyed?\n\nThe learner answered in their own words: \"Last year I go to Cartagena with my family and we was very happy because the beach is very beautiful and the food also.\"",
+    "model": "claude:sonnet",
+    "secs": 3.576,
+    "out": {
+      "message": "Cartagena sounds wonderful, especially with family! What was your favorite moment from that trip?",
+      "suggestions": [
+        "My favorite moment was watching the sunset from the old city walls with my family. It was magical.",
+        "I loved eating fresh seafood on the beach. It was the best meal of the whole trip.",
+        "I enjoyed the boat trip to the islands because the water was clear and the day was relaxing."
+      ],
+      "rephrase": "Last year I went to Cartagena with my family, and we were very happy because the beach was beautiful and the food was too.",
+      "keep": [
+        "Last year I went",
+        "we were very happy"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-b1",
+    "app": "Speak Up",
+    "what": "Reply + rephrase a B1 answer with mistakes",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\nYou: Hi! What was the last trip you really enjoyed?\n\nThe learner answered in their own words: \"Last year I go to Cartagena with my family and we was very happy because the beach is very beautiful and the food also.\"",
+    "model": "ollama:llama3.2:1b",
+    "secs": 9.559,
+    "out": {
+      "message": "That sounds great! I also love going to the beach. It's like, it's a must-see destination. Did you try any local cuisine that you would recommend?",
+      "suggestions": [
+        "Try the fish soup it's amazing, it's like a soup with fish and vegetables.",
+        "If you have time, visit the old city it's really cool and full of history.",
+        "If you can, take a ferry to the island they have a beautiful lighthouse."
+      ],
+      "rephrase": "It was very nice to relax by the sea, and the food was great too.",
+      "keep": [
+        "Have you been to Spain before?",
+        "Is Cartagena still your favorite city?"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-b1",
+    "app": "Speak Up",
+    "what": "Reply + rephrase a B1 answer with mistakes",
+    "input": "Topic: Travel\nLearner level: B1\n\nConversation so far:\nYou: Hi! What was the last trip you really enjoyed?\n\nThe learner answered in their own words: \"Last year I go to Cartagena with my family and we was very happy because the beach is very beautiful and the food also.\"",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 3.726,
+    "out": {
+      "message": "Beautiful city with good food.",
+      "suggestions": [
+        "Maybe next year to visit Havana instead.",
+        "Maybe to visit Medellín too.",
+        "Be careful with traffic, no good in the city center."
+      ],
+      "rephrase": "It was great to see the city's different neighborhoods and enjoy the food.",
+      "keep": [
+        "Enjoy the city's different neighborhoods.",
+        "See the different neighborhoods."
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-a2",
+    "app": "Speak Up",
+    "what": "Reply + rephrase an A2 answer",
+    "input": "Topic: Food\nLearner level: A2\n\nConversation so far:\nYou: Hello! What do you like to cook?\n\nThe learner answered in their own words: \"I like cook pasta in the weekends, is easy for me.\"",
+    "model": "claude:sonnet",
+    "secs": 4.602,
+    "out": {
+      "message": "Pasta is simple and delicious! What kind of sauce do you like with your pasta?",
+      "suggestions": [
+        "I like tomato sauce with garlic and cheese. It is simple and very tasty.",
+        "I usually make creamy pasta with chicken and mushrooms. It is my favorite.",
+        "I don't use sauce. I just add olive oil, salt, and a little cheese."
+      ],
+      "rephrase": "I like to cook pasta on the weekends. It's easy for me.",
+      "keep": [
+        "on the weekends",
+        "It's easy for me"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-a2",
+    "app": "Speak Up",
+    "what": "Reply + rephrase an A2 answer",
+    "input": "Topic: Food\nLearner level: A2\n\nConversation so far:\nYou: Hello! What do you like to cook?\n\nThe learner answered in their own words: \"I like cook pasta in the weekends, is easy for me.\"",
+    "model": "ollama:llama3.2:1b",
+    "secs": 4.259,
+    "out": {
+      "message": "That sounds like a nice way to relax. Do you prefer Italian food?",
+      "suggestions": [
+        "I love Italian food!"
+      ],
+      "rephrase": "I'm not sure, I'm not very good at cooking.",
+      "keep": [
+        "make pasta",
+        "enjoyed cooking",
+        "pasta sounds good"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-a2",
+    "app": "Speak Up",
+    "what": "Reply + rephrase an A2 answer",
+    "input": "Topic: Food\nLearner level: A2\n\nConversation so far:\nYou: Hello! What do you like to cook?\n\nThe learner answered in their own words: \"I like cook pasta in the weekends, is easy for me.\"",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 2.623,
+    "out": {
+      "message": "Pasta is yummy in Italy.",
+      "suggestions": [
+        "Maybe you like to try some new pizza recipes."
+      ],
+      "rephrase": "I think pasta is a classic Italian dish.",
+      "keep": [
+        "",
+        "]}"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-ielts",
+    "app": "Speak Up",
+    "what": "IELTS examiner, Part 1 answer",
+    "input": "Part 2 cue card for this test: Describe something you own which is very important to you.\n\nTest so far:\nExaminer: Good morning. Let's talk about your home town. Where is your home town?\n\nThe candidate answered in their own words: \"My home town is Valencia, is a very big city in the east of Spain, it have many people and the weather is cold.\"",
+    "model": "claude:sonnet",
+    "secs": 8.355,
+    "out": {
+      "message": "What do you like most about Valencia?",
+      "suggestions": [
+        "Well, I'd say it's the culture. There are so many museums, cafés and free events, especially on Sundays when the main roads close for the ciclovía. It's a great way to relax with my family.",
+        "Honestly, I like the food and the people. You can find everything from traditional ajiaco to international restaurants, and my friends here are always welcoming. That makes the city feel like home.",
+        "Well, probably the opportunities. Valencia has lots of universities and companies, so it's easier to find a good job. I also like being close to the mountains for weekend walks."
+      ],
+      "rephrase": "My home town is Valencia. It's a very big city in the east of Spain, with lots of people, and the weather is quite cold, especially in the mornings.",
+      "keep": [
+        "in the centre of",
+        "lots of people"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-ielts",
+    "app": "Speak Up",
+    "what": "IELTS examiner, Part 1 answer",
+    "input": "Part 2 cue card for this test: Describe something you own which is very important to you.\n\nTest so far:\nExaminer: Good morning. Let's talk about your home town. Where is your home town?\n\nThe candidate answered in their own words: \"My home town is Valencia, is a very big city in the east of Spain, it have many people and the weather is cold.\"",
+    "model": "ollama:llama3.2:1b",
+    "secs": 8.125,
+    "out": {
+      "message": "Now I'm going to give you a topic. You have one minute to prepare, then talk for one to two minutes. Don't worry if I stop you.",
+      "suggestions": [
+        "• A very important place to you is my hometown, it's a city with a rich history and culture."
+      ],
+      "rephrase": "A place that is very important to me is my hometown, it's a city with a rich history and culture.",
+      "keep": [
+        "I think that's why I'm so proud of my hometown.",
+        "I consider my hometown an important part of my identity.",
+        "I think it's the connection to my roots that makes my hometown so special."
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "speak-ielts",
+    "app": "Speak Up",
+    "what": "IELTS examiner, Part 1 answer",
+    "input": "Part 2 cue card for this test: Describe something you own which is very important to you.\n\nTest so far:\nExaminer: Good morning. Let's talk about your home town. Where is your home town?\n\nThe candidate answered in their own words: \"My home town is Valencia, is a very big city in the east of Spain, it have many people and the weather is cold.\"",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 304.261,
+    "error": "fetch failed"
+  },
+  {
+    "case": "write-check-b1",
+    "app": "Write Up",
+    "what": "Correct a B1 text",
+    "input": "Learner level: B1\nExplanation language: English\n\nLearner's text:\nYesterday I have gone to the supermarket for buy some things. When I arrived, I realised that I forget my wallet in home. I felt very embarrassing, so I returned to my house and I make the shopping later.",
+    "model": "claude:sonnet",
+    "secs": 6.054,
+    "out": {
+      "segments": [
+        {
+          "text": "Yesterday I ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "went",
+          "original": "have gone",
+          "why": "Use simple past for a finished time (yesterday)."
+        },
+        {
+          "text": " to the supermarket ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "to",
+          "original": "for",
+          "why": "Use 'to' + verb to express purpose."
+        },
+        {
+          "text": " buy some things. When I arrived, I realised that I ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "had forgotten",
+          "original": "forget",
+          "why": "Use past perfect for an action before another past action."
+        },
+        {
+          "text": " my wallet ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "at",
+          "original": "in",
+          "why": "The expression is 'at home'."
+        },
+        {
+          "text": " home. I felt very ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "embarrassed",
+          "original": "embarrassing",
+          "why": "Use -ed for how a person feels."
+        },
+        {
+          "text": ", so I returned to my house and ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "did",
+          "original": "I make",
+          "why": "Wrong tense/verb: past simple 'did' with 'the shopping'."
+        },
+        {
+          "text": " the shopping later.",
+          "original": null,
+          "why": null
+        }
+      ],
+      "patterns": [
+        "present perfect vs past simple",
+        "for vs to + infinitive (purpose)",
+        "past perfect",
+        "in/on/at (at home)",
+        "-ed vs -ing adjectives",
+        "make vs do"
+      ],
+      "tip": "Use the simple past with finished times like \"yesterday\", and remember -ed adjectives describe how you feel.",
+      "spanish": "Ayer fui al supermercado a comprar algunas cosas. Cuando llegué, me di cuenta de que había olvidado la cartera en casa. Me dio mucha vergüenza, así que volví a mi casa e hice la compra más tarde."
+    },
+    "error": null
+  },
+  {
+    "case": "write-check-b1",
+    "app": "Write Up",
+    "what": "Correct a B1 text",
+    "input": "Learner level: B1\nExplanation language: English\n\nLearner's text:\nYesterday I have gone to the supermarket for buy some things. When I arrived, I realised that I forget my wallet in home. I felt very embarrassing, so I returned to my house and I make the shopping later.",
+    "model": "ollama:llama3.2:1b",
+    "secs": 27.462,
+    "out": {
+      "segments": [
+        {
+          "text": "Yesterday I have gone to the supermarket for buy some things.",
+          "original": "Yesterday I went to the supermarket for buy some things.",
+          "why": "I need to correct the verb tense from 'I have gone' to 'I went'."
+        },
+        {
+          "text": "When I arrived, I realised that I forget my wallet in home.",
+          "original": "When I arrived, I realised that I forget my wallet in home.",
+          "why": "Change 'I realise' to 'realised' to maintain consistency with the present perfect tense."
+        },
+        {
+          "text": "I felt very embarrassing, so I returned to my house and I make the shopping later.",
+          "original": "I felt very embarrassed, so I returned to my house and I made the shopping later.",
+          "why": "Change 'I felt' to 'felt' to maintain consistency with the present tense."
+        },
+        {
+          "text": "I have made a mistake in the original sentence.",
+          "original": "I made a mistake in the original sentence.",
+          "why": "The original sentence is grammatically incorrect because 'I have gone to the supermarket' is in the past perfect tense, whereas 'I forgot my wallet' is in the simple past tense. The correct sentence should use the simple past tense for the first part, and the past perfect tense for the second part."
+        }
+      ],
+      "patterns": [
+        "make vs do",
+        "in/on/at for time",
+        "present perfect vs past"
+      ],
+      "tip": "It's essential to use the correct verb tense when describing past actions to maintain consistency and clarity in your writing.",
+      "spanish": "Ayer fui al supermercado para comprar algunos artículos. Cuando llegué, me di cuenta de que olvidé mi bolso en casa. Sentí una gran vergüenza, así que volví a casa y decidí hacer las compras más tarde."
+    },
+    "error": null
+  },
+  {
+    "case": "write-check-b1",
+    "app": "Write Up",
+    "what": "Correct a B1 text",
+    "input": "Learner level: B1\nExplanation language: English\n\nLearner's text:\nYesterday I have gone to the supermarket for buy some things. When I arrived, I realised that I forget my wallet in home. I felt very embarrassing, so I returned to my house and I make the shopping later.",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 12.918,
+    "out": {
+      "segments": [
+        {
+          "text": "Yesterday I have gone to the supermarket for buy some things.",
+          "original": "I",
+          "why": "one short plain reason: I have gone to the supermarket."
+        },
+        {
+          "text": "When I arrived, I realised that I forget my wallet in home.",
+          "original": "When I arrived, I realised that I forget my wallet in home.",
+          "why": "one short plain reason: I have gone to the supermarket."
+        },
+        {
+          "text": "I felt very embarrassing, so I returned to my house and I make the shopping later.",
+          "original": "I felt very embarrassing, so I returned to my house and I make the shopping later.",
+          "why": "one short plain reason: I have gone to the supermarket."
+        }
+      ],
+      "patterns": [
+        "make vs do",
+        "missing article 'the'",
+        "in/on/at for time",
+        "present perfect vs past"
+      ],
+      "tip": "When you're going to do something, try to use the correct verb for the correct tense. This will help you stay in the present moment and use the right language to express your ideas.",
+      "spanish": "Recuerdo que ayer fui al supermercado para comprar algunas cosas. Cuando llegué, me di cuenta de que olvidé mi bolso en casa. Sentí muy vergonzoso, así que regresé a mi casa y decidí hacer la compra más tarde."
+    },
+    "error": null
+  },
+  {
+    "case": "write-check-b2",
+    "app": "Write Up",
+    "what": "Correct a B2 opinion text",
+    "input": "Learner level: B2\nExplanation language: English\n\nLearner's text:\nIn my opinion, working from home have more advantages than disadvantages. People can save the time they spend in the traffic, and they can organize better their day. However, some persons feel alone and it is difficult to separate the work and the personal life.",
+    "model": "claude:sonnet",
+    "secs": 5.927,
+    "out": {
+      "segments": [
+        {
+          "text": "In my opinion, working from home ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "has",
+          "original": "have",
+          "why": "The subject 'working from home' is singular, so use 'has'."
+        },
+        {
+          "text": " more advantages than disadvantages. People can save the time they spend ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "in",
+          "original": "in the",
+          "why": "Use 'in traffic' without the article."
+        },
+        {
+          "text": " traffic, and they can ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "organize their day better",
+          "original": "organize better their day",
+          "why": "Adverbs like 'better' usually come after the object, not between the verb and object."
+        },
+        {
+          "text": ". However, some ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "people",
+          "original": "persons",
+          "why": "'People' is the natural plural; 'persons' sounds formal or legal."
+        },
+        {
+          "text": " feel ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "lonely",
+          "original": "alone",
+          "why": "'Lonely' describes the feeling of isolation; 'alone' just means without others."
+        },
+        {
+          "text": " and it is difficult to separate work and ",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "personal life",
+          "original": "the personal life",
+          "why": "Don't use 'the' with general uncountable ideas like work and personal life."
+        },
+        {
+          "text": ".",
+          "original": null,
+          "why": null
+        }
+      ],
+      "patterns": [
+        "subject-verb agreement",
+        "unnecessary article 'the'",
+        "adverb position",
+        "people vs persons",
+        "alone vs lonely",
+        "unnecessary article 'the'"
+      ],
+      "tip": "Remember that general ideas like traffic, work and personal life usually don't need 'the' in English.",
+      "spanish": "En mi opinión, trabajar desde casa tiene más ventajas que desventajas. Las personas pueden ahorrar el tiempo que pasan en el tráfico y pueden organizar mejor su día. Sin embargo, algunas personas se sienten solas y es difícil separar el trabajo de la vida personal."
+    },
+    "error": null
+  },
+  {
+    "case": "write-check-b2",
+    "app": "Write Up",
+    "what": "Correct a B2 opinion text",
+    "input": "Learner level: B2\nExplanation language: English\n\nLearner's text:\nIn my opinion, working from home have more advantages than disadvantages. People can save the time they spend in the traffic, and they can organize better their day. However, some persons feel alone and it is difficult to separate the work and the personal life.",
+    "model": "ollama:llama3.2:1b",
+    "secs": 16.064,
+    "out": {
+      "segments": [
+        {
+          "text": "In my opinion, working from home have more advantages than disadvantages.",
+          "original": null,
+          "why": null
+        },
+        {
+          "text": "People can save the time they spend in the traffic, and they can organize better their day.",
+          "original": "They can save the time they spend in the traffic",
+          "why": "They can save time by avoiding traffic, which is a major productivity drain."
+        },
+        {
+          "text": "However, some persons feel alone and it is difficult to separate the work and the personal life.",
+          "original": "However, some persons feel alone",
+          "why": "They find it hard to separate work and personal life due to the isolation."
+        }
+      ],
+      "patterns": [
+        "make vs do",
+        "missing article 'the'"
+      ],
+      "tip": "When writing about subjective opinions, be sure to use phrases like 'in my opinion' to show that you're expressing a personal viewpoint, and avoid using absolute words like 'always' or 'never'.",
+      "spanish": "En mi opinión, trabajar desde casa tienen más ventajas que desventajas. Los individuos pueden ahorrar el tiempo que gastan en el tráfico y organizar mejor su día. Sin embargo, algunos individuos se sienten aislados y es difícil separar el trabajo y la vida personal."
+    },
+    "error": null
+  },
+  {
+    "case": "write-check-b2",
+    "app": "Write Up",
+    "what": "Correct a B2 opinion text",
+    "input": "Learner level: B2\nExplanation language: English\n\nLearner's text:\nIn my opinion, working from home have more advantages than disadvantages. People can save the time they spend in the traffic, and they can organize better their day. However, some persons feel alone and it is difficult to separate the work and the personal life.",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 13.271,
+    "out": {
+      "segments": [
+        {
+          "text": "In my opinion, working from home have more advantages than disadvantages.",
+          "original": "In my opinion, working from home have more advantages than disadvantages.",
+          "why": "Because there are many benefits for both the employer and the employee."
+        },
+        {
+          "text": "People can save the time they spend in the traffic, and they can organize better their day.",
+          "original": "People can save the time they spend in the traffic, and they can organize better their day.",
+          "why": "Because it allows for a better use of time."
+        },
+        {
+          "text": "However, some persons feel alone and it is difficult to separate the work and the personal life.",
+          "original": "However, some persons feel alone and it is difficult to separate the work and the personal life.",
+          "why": "Because this can lead to feelings of loneliness and isolation."
+        }
+      ],
+      "patterns": [
+        "make vs do",
+        "missing article 'the'",
+        "in/on/at for time",
+        "past vs present"
+      ],
+      "tip": "When writing about personal opinions, try to be clear and concise, using simple sentences and short phrases. This will help you convey your ideas and thoughts without using too many words.",
+      "spanish": "En mi opinión, trabajar desde casa tiene más ventajas que desventajas. Los seres humanos pueden ahorrar el tiempo que gastan en el tráfico, y pueden organizar mejor su día. Sin embargo, algunos individuos sienten una sensación de abrumo y es difícil separar la labor y la vida personal. "
+    },
+    "error": null
+  },
+  {
+    "case": "write-prompt",
+    "app": "Write Up",
+    "what": "Make a writing task + help (B1, work)",
+    "input": "Learner level: B1\nTopic wish: work\n\nRecent questions:\n(none)",
+    "model": "claude:sonnet",
+    "secs": 5.223,
+    "out": {
+      "question": "Think about a time when you had a difficult day at work or school. What happened, and how did you deal with the problem?",
+      "words": [
+        "deadline",
+        "colleague",
+        "stressful",
+        "manage",
+        "solve",
+        "support"
+      ],
+      "phrases": [
+        "I had a lot to do",
+        "I asked my colleague for help",
+        "In the end, everything was fine",
+        "I felt under pressure"
+      ],
+      "starters": [
+        "Last month, I had a very difficult day because…",
+        "The biggest problem was that…",
+        "In the end, I solved it by…"
+      ],
+      "ideas": [
+        "A missed deadline or late project",
+        "A problem with a customer or boss",
+        "A technical problem, like a broken computer"
+      ],
+      "examples": [
+        "Last month, I had a very stressful day at work. My boss asked me to finish a report by 3 p.m., but my computer stopped working. I felt under pressure and didn't know what to do. I asked a colleague for help, and she lent me her laptop. In the end, I sent the report on time, and my boss was happy.",
+        "One day at school, I forgot my presentation at home. I was very nervous because the teacher was waiting. I called my brother, and he sent me the file by email. I borrowed a friend's laptop and gave the presentation. It went well, and now I always save my files online."
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "write-prompt",
+    "app": "Write Up",
+    "what": "Make a writing task + help (B1, work)",
+    "input": "Learner level: B1\nTopic wish: work\n\nRecent questions:\n(none)",
+    "model": "ollama:llama3.2:1b",
+    "secs": 17.76,
+    "out": {
+      "question": "What is your job and what do you like about it?",
+      "words": [
+        "job",
+        "like",
+        "company",
+        "experience",
+        "responsibilities"
+      ],
+      "phrases": [
+        "I'm really happy with my job because",
+        "my job gives me a lot of",
+        "I enjoy my responsibilities at",
+        "my company offers me a",
+        "I feel very fulfilled with my job"
+      ],
+      "starters": [
+        "I work at a",
+        "I have been working at a",
+        "I enjoy my job because",
+        "I am very happy with my job",
+        "I love my job and I work at"
+      ],
+      "ideas": [
+        "I like my job because",
+        "I'm grateful for my job",
+        "I feel lucky to have",
+        "I'm enjoying my job",
+        "I'm happy with my job"
+      ],
+      "examples": [
+        "I work as a",
+        "My job is",
+        "I'm a",
+        "I have",
+        "I'm really happy with",
+        "my job gives me a lot of",
+        "I enjoy my",
+        "I am very happy with",
+        "I love my",
+        "I work at a",
+        "I have been working at a",
+        "I enjoy my",
+        "I am very happy with",
+        "I love my"
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "write-prompt",
+    "app": "Write Up",
+    "what": "Make a writing task + help (B1, work)",
+    "input": "Learner level: B1\nTopic wish: work\n\nRecent questions:\n(none)",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 304.085,
+    "error": "fetch failed"
+  },
+  {
+    "case": "write-drill",
+    "app": "Write Up",
+    "what": "Drill from your real saved mistakes",
+    "input": "Learner level: B1\nExplanation language: English\n\nFrequent mistakes:\n- word choice / collocation: pick a side (1x), e.g. \"take\" → \"pick\"\n- time expression word order (1x), e.g. \"a few decades ago was impossible\" → \"was impossible a few decades ago\"\n- contrast structure and word choice (determine vs decide) (1x), e.g. \", but how people use it decides that\" → \"; rather, how people use it determines that\"\n- collocation: take sides (1x), e.g. \"a side\" → \"sides\"",
+    "model": "claude:sonnet",
+    "secs": 7.933,
+    "out": {
+      "items": [
+        {
+          "wrong": "In the meeting, my manager refused to take a side in the argument between the two teams.",
+          "right": "In the meeting, my manager refused to take sides in the argument between the two teams.",
+          "pattern": "collocation: take sides",
+          "hint": "This fixed expression uses a plural noun when you support one person or group against another."
+        },
+        {
+          "wrong": "Working from home was almost impossible a few decades ago, but now many companies offer it.",
+          "right": "Working from home was almost impossible a few decades ago, but now many companies offer it.",
+          "pattern": "time expression word order",
+          "hint": "placeholder"
+        },
+        {
+          "wrong": "A few years ago was difficult to book flights online from small airports.",
+          "right": "It was difficult to book flights online from small airports a few years ago.",
+          "pattern": "time expression word order",
+          "hint": "Put the time expression at the end of the clause and make sure the sentence has a subject."
+        },
+        {
+          "wrong": "Travel apps are not good or bad in themselves, but how tourists use them decides that.",
+          "right": "Travel apps are not good or bad in themselves; rather, how tourists use them determines that.",
+          "pattern": "contrast structure and determine vs decide",
+          "hint": "Use a contrast linker like 'rather', and choose the verb meaning 'to be the factor that causes a result'."
+        },
+        {
+          "wrong": "When my friends argue about politics, I never take a side; I just listen.",
+          "right": "When my friends argue about politics, I never take sides; I just listen.",
+          "pattern": "collocation: take sides",
+          "hint": "Think about whether this expression is singular or plural."
+        },
+        {
+          "wrong": "Both candidates were good, so it was hard to take one for the job.",
+          "right": "Both candidates were good, so it was hard to pick one for the job.",
+          "pattern": "word choice / collocation: pick vs take",
+          "hint": "Which verb means 'choose' from several options?"
+        },
+        {
+          "wrong": "The price of the hotel is not the only factor, but the location decides how much we enjoy the trip.",
+          "right": "The price of the hotel is not the only factor; rather, the location determines how much we enjoy the trip.",
+          "pattern": "contrast structure and determine vs decide",
+          "hint": "Use a stronger contrast structure, and pick the verb for a factor that influences an outcome."
+        },
+        {
+          "wrong": "Our company opened a second office in Madrid a few years ago, but was closed last year.",
+          "right": "Our company opened a second office in Madrid a few years ago, but it was closed last year.",
+          "pattern": "time expression word order",
+          "hint": "Check the second clause: it needs a subject, and the time expression stays at the end."
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "write-drill",
+    "app": "Write Up",
+    "what": "Drill from your real saved mistakes",
+    "input": "Learner level: B1\nExplanation language: English\n\nFrequent mistakes:\n- word choice / collocation: pick a side (1x), e.g. \"take\" → \"pick\"\n- time expression word order (1x), e.g. \"a few decades ago was impossible\" → \"was impossible a few decades ago\"\n- contrast structure and word choice (determine vs decide) (1x), e.g. \", but how people use it decides that\" → \"; rather, how people use it determines that\"\n- collocation: take sides (1x), e.g. \"a side\" → \"sides\"",
+    "model": "ollama:llama3.2:1b",
+    "secs": 26.428,
+    "out": {
+      "items": [
+        {
+          "wrong": "take",
+          "right": "pick",
+          "pattern": "word choice / collocation",
+          "hint": "Check the word order of the verb phrase."
+        },
+        {
+          "wrong": "was impossible",
+          "right": "was impossible a few decades ago",
+          "pattern": "time expression word order",
+          "hint": "Consider the tense consistency."
+        },
+        {
+          "wrong": "determine vs decide",
+          "right": "determine rather than decide",
+          "pattern": "contrast structure and word choice",
+          "hint": "Understand the difference in tone."
+        },
+        {
+          "wrong": "a side",
+          "right": "sides",
+          "pattern": "collocation",
+          "hint": "Identify the correct idiomatic expression."
+        },
+        {
+          "wrong": "take sides",
+          "right": "sides",
+          "pattern": "pick a side",
+          "hint": "Recognize the common idiomatic expression."
+        },
+        {
+          "wrong": "a few decades ago",
+          "right": "a few decades ago was impossible",
+          "pattern": "time expression word order",
+          "hint": "Understand the correct use of the past perfect."
+        },
+        {
+          "wrong": "determine rather than decide",
+          "right": "determine rather than decide",
+          "pattern": "contrast structure and word choice",
+          "hint": "Identify the correct nuance in the sentence."
+        },
+        {
+          "wrong": "check the word order of the time expression.",
+          "right": "was impossible a few decades ago",
+          "pattern": "time expression word order",
+          "hint": "Understand the structure of the sentence."
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "write-drill",
+    "app": "Write Up",
+    "what": "Drill from your real saved mistakes",
+    "input": "Learner level: B1\nExplanation language: English\n\nFrequent mistakes:\n- word choice / collocation: pick a side (1x), e.g. \"take\" → \"pick\"\n- time expression word order (1x), e.g. \"a few decades ago was impossible\" → \"was impossible a few decades ago\"\n- contrast structure and word choice (determine vs decide) (1x), e.g. \", but how people use it decides that\" → \"; rather, how people use it determines that\"\n- collocation: take sides (1x), e.g. \"a side\" → \"sides\"",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 4.122,
+    "out": {
+      "items": [
+        {
+          "wrong": "Learner level: B1",
+          "right": "pick",
+          "pattern": "word choice / collocation",
+          "hint": "A general rule in English: instead of \"determine\", use \"determine\" (contraction of \"determine and decide\")"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "case": "write-drillcheck",
+    "app": "Write Up",
+    "what": "Grade a drill answer (a valid alternative fix)",
+    "input": "Sentence with the mistake: I have finished the report yesterday.\nMistake type: present perfect vs past\nExpected fix: I finished the report yesterday.\nLearner's version: I completed the report yesterday.",
+    "model": "claude:sonnet",
+    "secs": 2.503,
+    "out": {
+      "correct": true,
+      "note": "Using simple past \"completed\" with \"yesterday\" fixes the tense error and sounds natural."
+    },
+    "error": null
+  },
+  {
+    "case": "write-drillcheck",
+    "app": "Write Up",
+    "what": "Grade a drill answer (a valid alternative fix)",
+    "input": "Sentence with the mistake: I have finished the report yesterday.\nMistake type: present perfect vs past\nExpected fix: I finished the report yesterday.\nLearner's version: I completed the report yesterday.",
+    "model": "ollama:llama3.2:1b",
+    "secs": 3.052,
+    "out": {
+      "correct": true,
+      "note": "I finished the report yesterday is a present perfect passive construction, whereas I completed the report yesterday is a past simple."
+    },
+    "error": null
+  },
+  {
+    "case": "write-drillcheck",
+    "app": "Write Up",
+    "what": "Grade a drill answer (a valid alternative fix)",
+    "input": "Sentence with the mistake: I have finished the report yesterday.\nMistake type: present perfect vs past\nExpected fix: I finished the report yesterday.\nLearner's version: I completed the report yesterday.",
+    "model": "ollama:llama3.2-1b-gptq-q4",
+    "secs": 4.414,
+    "out": {
+      "correct": true,
+      "note": "The learner's version 'I completed the report yesterday' is a mix of past perfect and present perfect tenses. A correct sentence would be 'I finished the report yesterday.' The past perfect tense describes a completed action in the past, while the present perfect tense describes an action that started in the past and continues in the present. The mistake is not present, but rather the incorrect use of the auxiliary verb 'completed' instead of 'finished'. A correct sentence would use 'finished' instead."
+    },
+    "error": null
+  }
+]

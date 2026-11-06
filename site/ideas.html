@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Ideas We Started From</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="ideas.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 1 · Background</span>
+  <h1>The ideas we started from</h1>
+  <p class="lead">Before any experiment, a few ideas from the conversation set up the question.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Neuron</strong></td><td>Idea (a tiny formula)</td><td>A voter who listens to several friends, trusts some more than others, and gives one opinion</td><td>Standard and ternary networks</td></tr><tr><td><strong>Weight</strong></td><td>A number</td><td>How much that voter trusts each friend</td><td>What training changes</td></tr><tr><td><strong>Training</strong></td><td>Code (a loop)</td><td>Practicing with an answer key: guess, check, adjust a little, repeat</td><td>Every experiment</td></tr><tr><td><strong>MNIST</strong></td><td>Data</td><td>A standard exam: 70,000 handwritten digits everyone tests on</td><td>Our task in steps 2–9</td></tr><tr><td><strong>Interference</strong></td><td>Physics</td><td>Two ripples in a pond: they stack higher or flatten out</td><td>Step 2, light</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block idea">
+  <span class="label">Idea 1 · What a neural network is</span>
+  <p>A program that <strong>learns from examples</strong> instead of following rules someone wrote. It's made of many small "neurons": each multiplies its inputs by its own numbers (<mark>weights</mark>), adds them up, and passes the result on.</p>
+  <p>Training is a loop: <strong>guess → compare with the right answer → nudge every weight a little → repeat</strong> thousands of times.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">Idea 2 · Where the knowledge lives</span>
+  <p>A trained network keeps <strong>no copy of its training data</strong>. It keeps only its weights. The knowledge is spread across all of them, in a precise arrangement:</p>
+  <p class="key" style="font-size:1rem">"We compressed knowledge into a precise arrangement of numbers that only makes sense inside a specific structure."</p>
+</section>
+
+<section class="block why">
+  <span class="label">Idea 3 · Is this the hard way?</span>
+  <p>A brain learns from a few examples on about 20 watts. Networks need huge data and energy. Maybe today's networks are like the old "circles on circles" model of the planets: they work, but there could be a simpler way nobody has seen yet.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">Idea 4 · Waves and bits</span>
+  <ul>
+    <li><strong>Waves</strong> (light, sound) can compute on their own: when they meet, they add up or cancel. That's free math done by physics.</li>
+    <li><strong>Bits</strong> (0/1, on/off) are a computer's simplest unit. A normal network uses millions of them just to <em>imitate</em> decimal math.</li>
+  </ul>
+  <p>Both raised the same question: <strong>what if a network used the medium's natural operation instead of decimal math?</strong></p>
+</section>
+
+<section class="block test">
+  <span class="label">How we tested it</span>
+  <p>Every experiment used the same task: recognize <strong>handwritten digits 0–9</strong> (the MNIST dataset, a classic test). Models learn from 20,000 or 60,000 examples and are scored on <strong>10,000 digits they never saw</strong>. Everything ran on this laptop, using Python and NumPy.</p>
+</section>
+
+<section class="plain">
+  <span class="label muted">Want these ideas explained slowly?</span>
+  
+</section>
+
+</main><script src="nav.js"></script></body></html>

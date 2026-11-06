@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making Gates Fast</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="speed.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 6 · Experiments · packed_gates.py, numba_gates.py</span>
+  <h1>Making gates fast</h1>
+  <p class="lead">Gates should be the cheapest thing a computer can do. So why were they 185× slower?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>64-bit number</strong></td><td>Hardware unit</td><td>A tray with 64 slots carried in one trip</td><td>64 images per operation</td></tr><tr><td><strong>Packing</strong></td><td>Code trick</td><td>Putting 64 letters in one envelope instead of 64 envelopes</td><td>11× faster</td></tr><tr><td><strong>Compile (Numba)</strong></td><td>Code tool</td><td>Translating a recipe from your language into the cook's native language</td><td>Another 55×</td></tr><tr><td><strong>16 threads</strong></td><td>Hardware</td><td>16 cooks working at once</td><td>Used by compiled code</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block why">
+  <span class="label">Why they were slow at first</span>
+  <p>Think of moving 64 coins across a room.</p>
+  <ul>
+    <li><strong>My first gate code</strong> carried each coin in its own big box, one trip per coin: each bit was stored in a whole byte, with Python loops on top.</li>
+    <li><strong>The standard network</strong> used NumPy's matrix library: a forklift tuned for decades.</li>
+  </ul>
+  <p>The race said nothing about which <em>job</em> is lighter. It compared a forklift with carrying boxes by hand.</p>
+</section>
+
+<section class="block test">
+  <span class="label">Fix 1 · Pack 64 images into one number</span>
+  <p>A CPU works on 64-bit numbers. One AND between two of them does <strong>64 ANDs at once</strong>. So we stored the same bit for 64 different images in one number. One operation = one gate for 64 images.</p>
+  <div class="figure">
+    <svg viewBox="0 0 620 110" role="img" aria-label="Before: one bit per operation. After: 64 bits per operation">
+      <g font-family="Segoe UI, sans-serif" font-size="13">
+        <text x="10" y="25" font-weight="700">Before:</text>
+        <rect x="80" y="12" width="18" height="18" fill="#b26a12"/><text x="110" y="26" fill="#5b6863">1 image per operation</text>
+        <text x="10" y="80" font-weight="700">After:</text>
+        <g fill="#2f7a4f">
+          <rect x="80" y="67" width="7" height="18"/><rect x="89" y="67" width="7" height="18"/><rect x="98" y="67" width="7" height="18"/><rect x="107" y="67" width="7" height="18"/>
+          <rect x="116" y="67" width="7" height="18"/><rect x="125" y="67" width="7" height="18"/><rect x="134" y="67" width="7" height="18"/><rect x="143" y="67" width="7" height="18"/>
+        </g>
+        <text x="158" y="81" fill="#5b6863">… 64 images per operation (one 64-bit number)</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="block test">
+  <span class="label">Fix 2 · Compile to machine code</span>
+  <p>NumPy creates many temporary copies for this kind of work. We installed <strong>Numba</strong> (with your OK), which turns the Python into real machine code that runs on all 16 CPU threads.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result · same answers every time (92.8%)</span>
+  <div class="bars">
+    <div class="bar"><span>Gates, 1 bit per byte</span><div class="t"><i style="width:0.16%;--c:#8d9893"></i></div><b>3,044/s</b></div>
+    <div class="bar"><span>Gates, packed (NumPy)</span><div class="t"><i style="width:1.8%;--c:#b26a12"></i></div><b>34,926/s</b></div>
+    <div class="bar"><span>Standard network</span><div class="t"><i style="width:48%;--c:#1e5a7a"></i></div><b>930,241/s</b></div>
+    <div class="bar"><span>Gates, packed + compiled</span><div class="t"><i style="width:100%;--c:#2f7a4f"></i></div><b>1,929,385/s</b></div>
+  </div>
+  <p><strong>Compiled gates were about 2× faster than the standard network</strong>, and 55× faster than the NumPy gates. The slowness had been the code, not the gates.</p>
+  <p class="cap">Bar lengths are relative to the fastest. Images per second on 10,000 test digits.</p>
+</section>
+
+<section class="block warn">
+  <span class="label">Keep in mind</span>
+  <p>The standard network wasn't specially tuned either. A gate (one AND on 64 images) is a much simpler job than a multiply-add, but the standard network has decades of library tuning behind it. Fairness gets checked properly in step 8.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

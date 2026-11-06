@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Network Made of Light</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="light.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 2 · Experiment · wave_net.py</span>
+  <h1>A network made of light</h1>
+  <p class="lead">Could light itself recognize a handwritten digit, with no neurons and no multiplications?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Phase (delay)</strong></td><td>A number per cell</td><td>Making part of a crowd walk a step later so they arrive out of sync</td><td>The 15,680 trained numbers</td></tr><tr><td><strong>Plate 56 × 56</strong></td><td>A size</td><td>A window with 3,136 panes, each a different thickness of glass</td><td>5 plates</td></tr><tr><td><strong>Detector</strong></td><td>A measurement</td><td>A light meter; the brightest of 10 wins</td><td>The answer</td></tr><tr><td><strong>Pass (epoch)</strong></td><td>A count</td><td>Reading the whole textbook once</td><td>3 passes</td></tr><tr><td><strong>Simulation</strong></td><td>Code + math</td><td>A weather forecast: the computer calculates what light <em>would</em> do</td><td>Why it was slow</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block idea">
+  <span class="label">The idea</span>
+  <p>When light waves meet, they <strong>add up</strong> (bright) or <strong>cancel</strong> (dark). This is called <mark>interference</mark>. If we place transparent plates that delay the light a little in each spot, we can steer where the bright spots land. Train the plates so each digit's light lands on its own detector.</p>
+  <p class="cap">Real-world version: in 2018 a UCLA team 3D-printed such plates and they recognized digits using only light (Lin and colleagues, Science).</p>
+</section>
+
+<section class="block test">
+  <span class="label">What we built (a simulation)</span>
+  <div class="figure">
+    <svg viewBox="0 0 640 190" role="img" aria-label="Digit as light passes through five plates to ten detectors">
+      <g font-family="Segoe UI, sans-serif">
+        <rect x="15" y="50" width="70" height="90" fill="#1f2a33"/><text x="50" y="110" text-anchor="middle" font-size="46" font-weight="700" fill="#fdf3e4">7</text>
+        <text x="50" y="160" text-anchor="middle" font-size="12" fill="#5b6863">digit as light</text>
+        <path d="M85 55 L560 35 L560 155 L85 135 Z" fill="#fdf3e4"/>
+        <g fill="#e8f1f6" stroke="#1e5a7a" stroke-width="1.5">
+          <rect x="140" y="35" width="12" height="120"/><rect x="215" y="35" width="12" height="120"/><rect x="290" y="35" width="12" height="120"/><rect x="365" y="35" width="12" height="120"/><rect x="440" y="35" width="12" height="120"/></g>
+        <text x="296" y="25" text-anchor="middle" font-size="14" font-weight="700">5 plates: each cell delays light (trained)</text>
+        <rect x="545" y="30" width="80" height="130" fill="#fff" stroke="#1f2a33"/>
+        <g fill="none" stroke="#8d9893"><rect x="555" y="43" width="14" height="14"/><rect x="578" y="43" width="14" height="14"/><rect x="601" y="43" width="14" height="14"/>
+          <rect x="551" y="85" width="12" height="12"/><rect x="568" y="85" width="12" height="12"/><rect x="585" y="85" width="12" height="12"/><rect x="602" y="85" width="12" height="12"/>
+          <rect x="555" y="127" width="14" height="14"/><rect x="601" y="127" width="14" height="14"/></g>
+        <rect x="578" y="127" width="14" height="14" fill="#f4c542" stroke="#2f7a4f" stroke-width="2"/>
+        <text x="585" y="180" text-anchor="middle" font-size="12" fill="#5b6863">10 detectors</text>
+      </g>
+    </svg>
+  </div>
+  <div class="steps">
+    <div class="step"><p><strong>The digit becomes light:</strong> bright where the ink is, like a flashlight through a stencil.</p></div>
+    <div class="step"><p><strong>It passes 5 plates.</strong> Each plate is a 56 × 56 grid of cells. A cell only delays the light (changes its <mark>phase</mark>); it blocks nothing.</p></div>
+    <div class="step"><p><strong>The waves interfere</strong> and get scrambled into complex patterns.</p></div>
+    <div class="step"><p><strong>10 detectors catch the light.</strong> The brightest one is the answer.</p></div>
+  </div>
+  <p><strong>Training:</strong> the 15,680 delays (5 × 56 × 56) start random. For each example the computer checks where the light landed and nudges every delay so a bit more light reaches the right detector.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result</span>
+  <div class="bars">
+    <div class="bar"><span>Before training<small>random plates</small></span><div class="t"><i style="width:8.7%;--c:#8d9893"></i></div><b>8.7%</b></div>
+    <div class="bar"><span>After 1 pass<small>38 s</small></span><div class="t"><i style="width:90.2%;--c:#b26a12"></i></div><b>90.2%</b></div>
+    <div class="bar"><span>After 3 passes<small>116 s</small></span><div class="t"><i style="width:90.9%;--c:#2f7a4f"></i></div><b>90.9%</b></div>
+  </div>
+  <p><strong>Light alone learned to read digits: 90.9% correct</strong> on 10,000 new digits. Random guessing gets 10%.</p>
+</section>
+
+<section class="plain">
+  <span class="label muted">What it looked like</span>
+  <div class="figure">
+    <img src="img/wave_net.png" alt="Top row: five trained plates that look like colorful noise. Rows below: digits 7, 2, 1, 0 as light, scrambling through the plates, ending on a detector board with the correct square outlined in green.">
+    <ul>
+      <li><strong>Top row:</strong> the 5 trained plates. They look like noise, but that pattern <em>is</em> the knowledge.</li>
+      <li><strong>Each row:</strong> one digit (7, 2, 1, 0), left to right through the plates.</li>
+      <li><strong>Last column:</strong> the detectors. Green box = right answer. All 4 correct.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="block warn">
+  <span class="label">Honest notes</span>
+  <ul>
+    <li>This was a <strong>simulation</strong>: the laptop calculated what light would do. That's why it was slow. Real printed plates would answer at the speed of light with almost no power.</li>
+    <li>The right detector only gets <em>a bit more</em> light than the others, so a real version would be sensitive to noise.</li>
+    <li>Our 90.9% matches the ~92% UCLA reported in simulation, a good sign the code is right.</li>
+  </ul>
+</section>
+
+</main><script src="nav.js"></script></body></html>

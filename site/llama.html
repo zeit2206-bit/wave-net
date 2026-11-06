@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Real Model: Llama 3.2 1B</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="llama.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 10 · llama/analyze.py, llama/llama_np.py</span>
+  <h1>A real model: Llama 3.2 1B</h1>
+  <p class="lead">Digits are a toy. Do the same lessons hold for a real language model?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Parameter</strong></td><td>A number</td><td>One knob; Llama has 1.24 billion</td><td>Same thing as our weights</td></tr><tr><td><strong>Token</strong></td><td>A word piece</td><td>A Lego brick of text: “Par” + “is”</td><td>128,256 of them</td></tr><tr><td><strong>Transformer</strong></td><td>An architecture (idea)</td><td>A factory: 16 floors, each with a meeting room (attention) and a workbench (feed-forward)</td><td>Llama’s design</td></tr><tr><td><strong>GGUF file</strong></td><td>A file format</td><td>A shipping box with a packing list on top and all the numbers inside</td><td>What we read, never changed</td></tr><tr><td><strong>Tokenizer</strong></td><td>Code</td><td>Cutting a sentence into Lego bricks before the factory</td><td>Part of llama_np.py</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block test">
+  <span class="label">Getting it</span>
+  <ul>
+    <li>You installed <strong>Ollama</strong>, a free program that runs models locally. We downloaded <strong>Llama 3.2 1B</strong> (Meta), 1.3 GB.</li>
+    <li>It answers at about <strong>19 tokens per second</strong> on this laptop, fully offline.</li>
+    <li>"1B" means about <strong>1 billion parameters</strong>: adjustable weights, the same thing as in our digit networks, just many more.</li>
+  </ul>
+</section>
+
+<section class="block result">
+  <span class="label">What's inside the file</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Setting</th><th>Value</th><th>What it really is</th><th>Factory picture</th></tr></thead>
+    <tbody>
+      <tr><td>Layers</td><td class="num">16</td><td>A count: the text passes 16 processing stations in a row. Each has an attention part and a feed-forward part.</td><td>16 floors of the factory</td></tr>
+      <tr><td>Width</td><td class="num">2,048</td><td>A size: each word becomes a list of 2,048 numbers, which is how the model "holds" it.</td><td>Each word rides on a tray with 2,048 slots</td></tr>
+      <tr><td>Feed-forward width</td><td class="num">8,192</td><td>A size: inside each station the list briefly grows to 8,192 numbers, then shrinks back.</td><td>A big workbench where the tray is unpacked, then repacked</td></tr>
+      <tr><td>Attention heads</td><td class="num">32 (8 shared)</td><td>A count: 32 small lookups check which earlier words matter. They share 8 sets of notes to save memory.</td><td>32 inspectors looking back along the line, sharing 8 notebooks</td></tr>
+      <tr><td>Vocabulary</td><td class="num">128,256 tokens</td><td>A count: the word pieces it knows ("Par", "is", " the"…).</td><td>The catalog of parts</td></tr>
+      <tr><td>Storage</td><td class="num">8-bit (Q8_0)</td><td>A storage format: each weight is a whole number from −127 to 127, and every group of 32 shares one multiplier.</td><td>Prices in whole cents, one exchange rate per page</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">None of these are code or formulas: they're the model's floor plan. Our digit network, by comparison, had 2 floors with trays of 128 slots.</p>
+  <p><strong>Where 1.24 billion comes from:</strong> multiply the sizes. One feed-forward part has 3 matrices of 2,048 × 8,192 ≈ 17 million weights each, about 50 million together. Do that on 16 floors, then add attention and the vocabulary table (128,256 × 2,048).</p>
+  <p><strong>Where the 1.24 billion parameters are:</strong></p>
+  <div class="bars">
+    <div class="bar"><span>Feed-forward<small>same kind as our standard network</small></span><div class="t"><i style="width:65%;--c:#1e5a7a"></i></div><b>65%</b></div>
+    <div class="bar"><span>Word embeddings<small>one row of numbers per token</small></span><div class="t"><i style="width:21%;--c:#b26a12"></i></div><b>21%</b></div>
+    <div class="bar"><span>Attention<small>"which words matter"</small></span><div class="t"><i style="width:14%;--c:#5a4a9c"></i></div><b>14%</b></div>
+  </div>
+  <p>Weights are tiny (typically 0.01–0.02). About a third are very small, and only 2–4% are large — the pattern that made ternary work on digits.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">Is it a "standard" neural network?</span>
+  <p>Mostly yes. Llama is a <mark>transformer</mark>. Its feed-forward parts are exactly like our standard digit network: multiply, add, if-then step. The attention parts are extra: they let each word look at the other words (for example, to know what "it" refers to).</p>
+</section>
+
+<section class="block test">
+  <span class="label">Running it ourselves</span>
+  <p>To experiment, we needed to change the weights. Ollama hides them, so I wrote two things in plain NumPy, <strong>without changing Ollama's file</strong>:</p>
+  <ul>
+    <li>a reader for the model file;</li>
+    <li>the whole model: the tokenizer (text → tokens) and all 16 layers.</li>
+  </ul>
+</section>
+
+<section class="block result">
+  <span class="label">Check: does our version match Ollama?</span>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Continues "The capital of France is"</th></tr></thead>
+    <tbody>
+      <tr><td>Ollama</td><td>" Paris. The Eiffel Tower is located in Paris."</td></tr>
+      <tr><td>Our NumPy version</td><td>" Paris. The Eiffel Tower is located in Paris."</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Identical</strong>, token for token. So our measurements on the next page can be trusted. (Ours is slow, about 9 s per word, because it's simple code that recomputes everything.)</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

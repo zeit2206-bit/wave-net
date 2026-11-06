@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What We Learned</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="lessons.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 14 · Summary</span>
+  <h1>What we learned</h1>
+  <p class="lead">The answers to the questions we started with, in a few lines.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Sweet spot</strong></td><td>Idea</td><td>Not a full paint set, not black and white: a few well-chosen colors</td><td>Ternary 128</td></tr><tr><td><strong>Post-training vs. trained-that-way</strong></td><td>Idea</td><td>Shrinking a finished suit vs. sewing it small from the start</td><td>Llama vs. our digits</td></tr><tr><td><strong>Efficiency limit</strong></td><td>Physics + estimates</td><td>How much fuel a car could save before hitting the laws of physics</td><td>Table below</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="plain">
+  <h2>Five lessons</h2>
+  <div class="steps">
+    <div class="step"><p><strong>Simpler units do work.</strong> Light read digits at 91%, logic gates at 95%, with no decimal multiplication.</p></div>
+    <div class="step"><p><strong>A network needs an "if-then" step.</strong> Light only mixes, so it hit a ceiling. Gates and neurons can decide.</p></div>
+    <div class="step"><p><strong>How it's organized matters as much as the unit.</strong> Gates went from 185× slower to 2.8× faster just by reorganizing the same work.</p></div>
+    <div class="step"><p><strong>The sweet spot is the middle.</strong> Not 32 bits, not 1 bit: weights of −1/0/+1 kept accuracy in a tiny model that trains in seconds.</p></div>
+    <div class="step"><p><strong>It must be learned that way.</strong> Rounding a real model (Llama) to ternary after training destroys it; 4 bits is the safe floor without retraining.</p></div>
+  </div>
+</section>
+
+<section class="block result">
+  <span class="label">The final ranking on digits</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Best at</th><th>Winner</th></tr></thead>
+    <tbody>
+      <tr><td>Accuracy</td><td>Standard network or ternary 512 (97.3%)</td></tr>
+      <tr><td>Speed</td><td>Organized logic gates (~2.4–2.6 million images/s)</td></tr>
+      <tr><td>Size</td><td>Ternary 128 (29 KB)</td></tr>
+      <tr><td>Training time</td><td>Standard or ternary 128 (11 s)</td></tr>
+      <tr class="win"><td>Best balance</td><td>Ternary 128: 96.5%, 29 KB, 11 s, same speed as standard</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block idea">
+  <span class="label">Is any of this new?</span>
+  <p>No: every main result repeats published work (UCLA's light networks 2018, logic gate networks 2022, ternary networks 2016, BitNet 2024, quantization research). That's good news: our code agrees with the experts. What's ours is the <strong>side-by-side comparison of all of them on one laptop</strong>.</p>
+</section>
+
+<section class="block why">
+  <span class="label">How far could efficiency go?</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Level</th><th>Room for improvement</th></tr></thead>
+    <tbody>
+      <tr><td>Physics (the absolute floor)</td><td>About a million times below today's chips</td></tr>
+      <tr><td>The brain (proof it's possible)</td><td>Roughly 1,000–100,000× more efficient than AI hardware</td></tr>
+      <tr><td>Special chips (FPGA)</td><td>~100–1,000× in published work</td></tr>
+      <tr><td>This laptop, better code</td><td>Maybe 3–10× more speed (my estimate)</td></tr>
+      <tr><td>Digits, with local wiring</td><td>~99% correct in ~10–30 KB</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block test">
+  <span class="label">Possible next steps</span>
+  <ul>
+    <li><strong>Even smaller Llama (paused):</strong> word table to 4–5 bits, 3-bit late layers, maybe drop 1–2 layers. Target ~0.6 GB at perplexity ~11–12 (now 0.83 GB, 10.47).</li>
+    <li><strong>Android app:</strong> our 4-bit file running on a phone through llama.cpp.</li>
+    <li><strong>Try BitNet b1.58 2B:</strong> a real model trained ternary from the start (needs its own program).</li>
+    <li><strong>Local wiring</strong> for gates or ternary on digits, aiming at ~99%.</li>
+    <li><strong>Sound instead of light:</strong> a real 3D-printed build (parked).</li>
+  </ul>
+</section>
+
+<section class="plain">
+  <span class="label muted">All the files</span>
+  <p class="files">Folder <code>wave-net/</code>:<br>
+  wave_net.py · show.py · standard_net.py · hybrid_net.py · gate_net.py · packed_gates.py · numba_gates.py · fast_gates.py · int8_net.py · ternary_net.py · fast_ternary.py<br>
+  llama/ gguf.py · analyze.py · llama_np.py · quant_test.py (+ quant_test.log)<br></p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

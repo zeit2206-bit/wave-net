@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bigger Gates and Factory Tricks</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="bigger.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 7 · Experiments · gate_net.py big, fast_gates.py</span>
+  <h1>A bigger gate network + the factory tricks</h1>
+  <p class="lead">Two goals: close the accuracy gap, and copy the tricks that make the standard network fast.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Pass-through gate</strong></td><td>Idea</td><td>A worker who just hands the part to the next one</td><td>70% of gates</td></tr><tr><td><strong>Pruning</strong></td><td>Code trick</td><td>Firing workers who do nothing, and connecting their neighbors directly</td><td>72,000 → 15,989 gates</td></tr><tr><td><strong>Cache</strong></td><td>Hardware</td><td>The small shelf right next to the worker vs. the far warehouse (RAM)</td><td>Why order matters</td></tr><tr><td><strong>Random wiring</strong></td><td>Idea</td><td>Parts scattered all over the warehouse</td><td>Slows the gates</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block why">
+  <span class="label">Why is the standard network so fast?</span>
+  <ul>
+    <li><strong>The job is small:</strong> ~118,000 multiply-adds per image; the CPU does hundreds of billions per second.</li>
+    <li><strong>The CPU is built for it:</strong> one instruction multiplies and adds 8 numbers at once, on 16 threads.</li>
+    <li><strong>40 years of tuning:</strong> the library keeps data in the CPU's small fast memory (cache) and reads it in order.</li>
+  </ul>
+  <p>Picture a well-organized factory: every worker has their parts at hand. Our gates were workers walking across the warehouse for each part (random wiring = scattered memory reads).</p>
+</section>
+
+<section class="block test">
+  <span class="label">Part 1 · A bigger network (keeping the laptop's limits in mind)</span>
+  <ul>
+    <li>All <strong>60,000</strong> training digits instead of 20,000.</li>
+    <li><strong>4 brightness questions</strong> per pixel instead of 2 (3,136 bits per image).</li>
+    <li><strong>6 layers × 12,000 gates</strong>, each starting as "pass-through" (helps deep circuits train).</li>
+    <li>About 1 GB of memory; training took <strong>~49 minutes</strong>.</li>
+  </ul>
+  <p>For fairness, the standard network was also retrained on all 60,000 digits: it went from 95.3% to <strong>97.3%</strong>.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result · bigger</span>
+  <div class="bars">
+    <div class="bar"><span>Gates, small</span><div class="t"><i style="width:92.8%;--c:#b26a12"></i></div><b>92.8%</b></div>
+    <div class="bar"><span>Gates, big</span><div class="t"><i style="width:95.0%;--c:#2f7a4f"></i></div><b>95.0%</b></div>
+    <div class="bar"><span>Standard (60k digits)</span><div class="t"><i style="width:97.3%;--c:#1e5a7a"></i></div><b>97.3%</b></div>
+  </div>
+  <p>+2.2 points, but the standard network improved too. The gap stayed about 2 points.</p>
+  <p><strong>Surprise:</strong> 50,070 of the 72,000 gates (70%) ended up as "pass-through": they just copy a wire and do nothing.</p>
+</section>
+
+<section class="block test">
+  <span class="label">Part 2 · The factory tricks (no retraining)</span>
+  <div class="steps">
+    <div class="step"><p><strong>No wasted steps:</strong> remove pass-through gates (connect readers straight to the source), and remove gates whose output is never used.</p></div>
+    <div class="step"><p><strong>Parts in order:</strong> renumber the remaining gates so memory is read mostly forwards.</p></div>
+    <div class="step"><p><strong>More per move:</strong> 256 images per block, so the CPU uses its widest instructions.</p></div>
+    <div class="step"><p><strong>Faster counting:</strong> count the 1s for 64 images at once, instead of bit by bit.</p></div>
+  </div>
+</section>
+
+<section class="block result">
+  <span class="label">Result · organized · identical answers (95.0%)</span>
+  <div class="bars">
+    <div class="bar"><span>Gates trained<small>72,000 gates</small></span><div class="t"><i style="width:100%;--c:#8d9893"></i></div><b>72,000</b></div>
+    <div class="bar"><span>Pass-through removed</span><div class="t"><i style="width:26%;--c:#b26a12"></i></div><b>18,775</b></div>
+    <div class="bar"><span>Unused removed</span><div class="t"><i style="width:22%;--c:#2f7a4f"></i></div><b>15,989</b></div>
+  </div>
+  <p><strong>78% of the trained network was doing nothing.</strong></p>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th>Images/s</th><th>Size</th><th>Correct</th></tr></thead>
+    <tbody>
+      <tr><td>Big gates, compiled</td><td class="num">1,008,288</td><td class="num">281 KB</td><td class="num">95.0%</td></tr>
+      <tr class="win"><td>Big gates, organized</td><td class="num">2,499,813</td><td class="num">66 KB</td><td class="num">95.0%</td></tr>
+      <tr><td>Standard network</td><td class="num">882,161</td><td class="num">~460 KB</td><td class="num">97.3%</td></tr>
+    </tbody>
+  </table></div>
+  <p>Gates: <strong>2.8× faster and ~7× smaller</strong> than the standard network, but 2.3 points less accurate.</p>
+</section>
+
+<section class="block warn">
+  <span class="label">Lesson about the laptop</span>
+  <p>Python holds back printed output when it isn't writing to a screen, so the long training looked "dead" while it was running fine. Now we use <code>python -u</code> for live logs.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

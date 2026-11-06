@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Light + Camera</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="hybrid.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 4 · Experiment · hybrid_net.py</span>
+  <h1>Light + camera</h1>
+  <p class="lead">If light's problem is that it can't "decide", what if we add a decision step in the middle?</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Camera step</strong></td><td>Physics + idea</td><td>Photocopying a color photo in black and white: you keep brightness, lose the color</td><td>Lost the phase information</td></tr><tr><td><strong>Fixed vs. tunable</strong></td><td>Idea</td><td>A door that always opens at the same push vs. one you can adjust</td><td>Why the camera didn't help</td></tr><tr><td><strong>Memristor</strong></td><td>Hardware</td><td>A resistor that remembers how much current went through it, like a worn path in grass</td><td>Most promising real medium</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block idea">
+  <span class="label">Other things that can compute</span>
+  <p>Before testing, we looked at what else besides light could do this kind of work:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Medium</th><th>Has the if-then step?</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Analog electronic chips (memristors)</td><td>Yes</td><td>Real chips exist — most promising</td></tr>
+      <tr><td>Light + electronics (hybrid)</td><td>Yes</td><td>Prototypes — tested here</td></tr>
+      <tr><td>Spiking chips (pulses, like brains)</td><td>Yes</td><td>Real chips (Intel Loihi)</td></tr>
+      <tr><td>Sound and vibrations</td><td>Partly</td><td>Lab demos</td></tr>
+      <tr><td>Living neurons on a chip</td><td>Yes</td><td>Early experiments</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">Building light for real at home isn't practical (cells must be under 1 micrometer). Sound with a 3D printer could work — parked for later.</p>
+</section>
+
+<section class="block test">
+  <span class="label">What we tested</span>
+  <p>After some of the plates, a simulated <strong>camera</strong> measures how bright each spot is and sends that brightness on as new light. Measuring brightness is a simple if-then-like step. We tried a camera after plate 3, and cameras after plates 2 and 4.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result</span>
+  <div class="bars">
+    <div class="bar"><span>Light only</span><div class="t"><i style="width:90.9%;--c:#b26a12"></i></div><b>90.9%</b></div>
+    <div class="bar"><span>Camera after plate 3</span><div class="t"><i style="width:91.5%;--c:#2f7a4f"></i></div><b>91.5%</b></div>
+    <div class="bar"><span>Cameras after 2 and 4</span><div class="t"><i style="width:91.3%;--c:#2f7a4f"></i></div><b>91.3%</b></div>
+    <div class="bar"><span>Standard network</span><div class="t"><i style="width:95.3%;--c:#1e5a7a"></i></div><b>95.3%</b></div>
+  </div>
+  <p><strong>It barely helped</strong> (+0.6 points, which could even be chance).</p>
+</section>
+
+<section class="block why">
+  <span class="label">Why (best explanation)</span>
+  <ul>
+    <li><strong>The camera step is fixed.</strong> A neuron's if-then step is tuned during training; this one isn't.</li>
+    <li><strong>The camera throws away half the information</strong>: it keeps brightness but loses the phase (the delays).</li>
+    <li><strong>The plates still only steer light.</strong> There's no hidden layer of features for the decision step to work on.</li>
+  </ul>
+  <p class="key" style="font-size:1rem">Adding any if-then step isn't enough. It needs to be tunable, and everywhere.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">Change of direction</span>
+  <p>Instead of simulating physics, why not use what the computer <em>already is</em>? Its simplest unit is the <strong>bit</strong>, processed by logic gates. And gates <em>do</em> have the if-then step built in: AND means "only if both". That's the next step.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

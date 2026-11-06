@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Llama Breaks as Ternary</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="llama-ternary.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 12 · Explanation · no new experiment</span>
+  <h1>Why Llama breaks when made ternary</h1>
+  <p class="lead">Our digit network worked with −1/0/+1. Llama, rounded to −1/0/+1, wrote only commas. This page explains why, one problem at a time, and what could fix it.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Weight</strong></td><td>A number</td><td>A volume knob: how much one input counts</td><td>Llama has 1.24 billion</td></tr>
+      <tr><td><strong>Rounding</strong></td><td>Math</td><td>Writing $12.37 as $12</td><td>What "making it ternary" does</td></tr>
+      <tr><td><strong>Scale</strong></td><td>A number</td><td>An exchange rate that turns −1/0/+1 back into real sizes</td><td>One per block of 32 weights</td></tr>
+      <tr><td><strong>Rounding error</strong></td><td>A number</td><td>The cents you lost when rounding the price</td><td>Problem 1</td></tr>
+      <tr><td><strong>Post-training conversion</strong></td><td>Idea</td><td>Shrinking a finished suit</td><td>What we did to Llama</td></tr>
+      <tr><td><strong>Trained-that-way</strong></td><td>Idea</td><td>Sewing the suit small from the start</td><td>What we did to digits, and what BitNet does</td></tr>
+      <tr><td><strong>Perplexity</strong></td><td>A measurement</td><td>How many words the model is hesitating between; lower is better</td><td>Original 9.85, ternary 18,052</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="key">The short version: rounding throws away most of each weight's detail, the errors pile up through 16 layers, and Llama was never taught to cope with that. Our digit network was.</section>
+
+<section class="block why">
+  <span class="label">Problem 1 · Three values can't hold Llama's detail</span>
+  <p>Llama's weights are small decimals, mostly between −0.02 and +0.02, and each one is slightly different. Ternary forces each one to <strong>−1, 0 or +1 times a shared scale</strong>. Here are six real-looking weights from one block:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Original weight</th><th class="num">8-bit keeps</th><th class="num">4-bit keeps</th><th class="num">Ternary keeps</th></tr></thead>
+    <tbody>
+      <tr><td class="num">0.0210</td><td class="num">0.0210</td><td class="num">0.0210</td><td class="num">0.011 (+1)</td></tr>
+      <tr><td class="num">−0.0040</td><td class="num">−0.0040</td><td class="num">−0.0030</td><td class="num">0 (skip)</td></tr>
+      <tr><td class="num">0.0130</td><td class="num">0.0130</td><td class="num">0.0120</td><td class="num">0.011 (+1)</td></tr>
+      <tr><td class="num">0.0007</td><td class="num">0.0007</td><td class="num">0</td><td class="num">0 (skip)</td></tr>
+      <tr><td class="num">−0.0180</td><td class="num">−0.0180</td><td class="num">−0.0180</td><td class="num">−0.011 (−1)</td></tr>
+      <tr><td class="num">0.0090</td><td class="num">0.0090</td><td class="num">0.0090</td><td class="num">0.011 (+1)</td></tr>
+      <tr><td><strong>Typical error</strong></td><td class="num">&lt; 1%</td><td class="num">~7%</td><td class="num"><strong>~40%</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">An illustration with made-up but typical numbers, not measured from the file. The error is the typical lost amount compared with a typical weight's size.</p>
+  <ul>
+    <li><strong>0.021 and 0.009</strong> become the same value, although one was more than twice the other.</li>
+    <li><strong>−0.004</strong> is switched off completely.</li>
+  </ul>
+  <p>Picture a recipe where "21 g of salt" and "9 g of salt" both become "a pinch", and "4 g of sugar" becomes "none". One such change is fine. A billion of them are not.</p>
+</section>
+
+<section class="block why">
+  <span class="label">Problem 2 · The errors pile up through the layers</span>
+  <p>Llama is a factory with 16 floors. Each floor takes the previous floor's work and adds its own. If every floor makes a 40% mistake, floor 2 works on damaged parts, floor 3 on worse ones, and by floor 16 nothing is left of the original meaning.</p>
+  <div class="figure">
+    <svg viewBox="0 0 620 120" role="img" aria-label="Error grows from layer 1 to layer 16">
+      <g font-family="Segoe UI, sans-serif" font-size="12">
+        <rect x="20"  y="70" width="60" height="20" fill="#e9f5ee" stroke="#2f7a4f"/>
+        <rect x="110" y="60" width="60" height="30" fill="#fdf3e4" stroke="#b26a12"/>
+        <rect x="200" y="45" width="60" height="45" fill="#fdf3e4" stroke="#b26a12"/>
+        <rect x="290" y="30" width="60" height="60" fill="#fbecf2" stroke="#a33d6b"/>
+        <rect x="470" y="10" width="60" height="80" fill="#fbecf2" stroke="#a33d6b"/>
+        <text x="410" y="60" text-anchor="middle" fill="#5b6863" font-size="18">…</text>
+        <text x="50"  y="108" text-anchor="middle">layer 1</text><text x="140" y="108" text-anchor="middle">layer 2</text>
+        <text x="230" y="108" text-anchor="middle">layer 3</text><text x="320" y="108" text-anchor="middle">layer 4</text>
+        <text x="500" y="108" text-anchor="middle">layer 16</text>
+        <text x="560" y="55" fill="#5b6863">error</text><text x="560" y="70" fill="#5b6863">size</text>
+      </g>
+    </svg>
+  </div>
+  <p><strong>Our Test B measured this:</strong></p>
+  <div class="tbl"><table>
+    <thead><tr><th>Made ternary</th><th class="num">Perplexity</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Only layer 15 (last)</td><td class="num">15</td><td>Its error has no later floors to grow through</td></tr>
+      <tr><td>Only layer 0 (first)</td><td class="num">4,072</td><td>Its error passes through all 15 later floors</td></tr>
+      <tr><td>All layers</td><td class="num">18,052</td><td>Every floor adds damage on top of damage</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block why">
+  <span class="label">Problem 3 · Llama never learned to work with three values</span>
+  <p>This is the key difference from our digit test.</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Our digit network</th><th>Llama</th></tr></thead>
+    <tbody>
+      <tr><td>How it became ternary</td><td>Trained with −1/0/+1 <strong>from the first step</strong></td><td>Trained with full decimals, then <strong>rounded at the end</strong></td></tr>
+      <tr><td>What training did</td><td>Each time rounding hurt, training adjusted the other weights to compensate</td><td>Nothing compensated. Its weights depend on fine detail that rounding erased</td></tr>
+      <tr><td>Picture</td><td>A choir that practiced with only 3 notes and arranged the song for them</td><td>A full orchestra's music played on 3 notes, unchanged</td></tr>
+      <tr><td>Result</td><td>96.5% (vs 97.3%)</td><td>Only commas</td></tr>
+    </tbody>
+  </table></div>
+  <p>A network's knowledge is not in single weights, but in how they <strong>balance each other</strong>. In Llama, many small weights cancel or add up very precisely. Rounding breaks that balance everywhere at once.</p>
+</section>
+
+<section class="block why">
+  <span class="label">Problem 4 · Why not just retrain Llama as ternary?</span>
+  <p>Retraining would let it re-balance, like our digit network did. But:</p>
+  <ul>
+    <li><strong>Size:</strong> our digit network had ~118,000 weights; Llama has 1.24 billion, about <strong>10,000× more</strong>.</li>
+    <li><strong>Data:</strong> digits needed 60,000 small images. Re-balancing Llama in published work takes <strong>billions of words</strong>.</li>
+    <li><strong>Memory:</strong> training needs the weights plus extra copies for the "nudges", roughly 15–20 GB for Llama 1B. That's more than this laptop can spare.</li>
+    <li><strong>Speed:</strong> our NumPy Llama takes ~9 s per word just to <em>read</em>. Training is several times heavier per word.</li>
+  </ul>
+  <p>Picture re-teaching a whole orchestra: possible, but it needs a concert hall and months, not a living room and an afternoon.</p>
+</section>
+
+<section class="block warn">
+  <span class="label">Problem 5 · Small models are the hardest case</span>
+  <p>Big models (70B) have many weights doing similar jobs, so losing detail in some is covered by others. A 1B model has fewer spare weights, so <strong>each one matters more</strong>. Research consistently finds that low-bit conversion hurts small models most.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Test C · we tried 8 fast fixes (llama/ternary_sweep.py)</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th class="num">Bits/weight</th><th class="num">Perplexity</th><th>"The capital of France is…"</th></tr></thead>
+    <tbody>
+      <tr><td>Plain ternary</td><td class="num">2.1</td><td class="num">18,052</td><td>,,,,,,,,</td></tr>
+      <tr><td>Better cut-off rule</td><td class="num">2.1</td><td class="num">12,919</td><td>' ' ' '</td></tr>
+      <tr><td>Smallest error per block</td><td class="num">2.1</td><td class="num">20,921</td><td>a A, ,,,</td></tr>
+      <tr><td>Keep top 1% exact</td><td class="num">2.3</td><td class="num">3,857</td><td>a more, a, and a,</td></tr>
+      <tr><td>Keep top 5% exact</td><td class="num">3.3</td><td class="num">674</td><td>a great place to the the</td></tr>
+      <tr><td>Scale per 8 weights</td><td class="num">3.6</td><td class="num">2,371</td><td>a country, the two men</td></tr>
+      <tr><td>2 copies, layers 0–7 only</td><td class="num">3.1</td><td class="num">727</td><td>the best, and the only one</td></tr>
+      <tr><td>2 stacked copies</td><td class="num">4.2</td><td class="num">85</td><td>Paris. This is a famous song by</td></tr>
+      <tr><td>3 stacked copies</td><td class="num">6.2</td><td class="num">12.9</td><td>Paris. The capital of France is Paris</td></tr>
+      <tr class="win"><td>Normal 4-bit (reference)</td><td class="num">4.5</td><td class="num">11.8</td><td>Paris. Paris is a city</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>No fast trick rescued ternary.</strong> At the same size, normal 3–4-bit always wins.</li>
+    <li><strong>Keeping the biggest 1% helped most for its cost:</strong> a few weights matter a lot (like keeping the faces sharp).</li>
+    <li><strong>Surprise:</strong> making each weight as close as possible made the model <em>worse</em>. What counts is the model's output, not each weight alone, like rounding each price perfectly but getting the bill's total wrong.</li>
+    <li><strong>Stacked copies work, but expensively:</strong> 3 copies (6.2 bits) only match normal 4-bit.</li>
+  </ul>
+  <p class="cap">Next logical step: methods that check errors on real sentences (GPTQ-style), not on weights alone.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Test D · rounding that watches real sentences (llama/gptq_test.py)</span>
+  <p>Each weight is rounded one at a time, and the rest are nudged so the layer's <strong>output</strong> stays close, checked on 8,000 words of example text. Picture rounding prices one by one and adjusting the remaining ones so the bill's total still matches.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Version</th><th class="num">Plain rounding</th><th class="num">Watching sentences</th><th>"The capital of France is…"</th></tr></thead>
+    <tbody>
+      <tr><td>Ternary (2.1 bits)</td><td class="num">18,052</td><td class="num">1,264</td><td>not the same, but the same,</td></tr>
+      <tr><td>3-bit</td><td class="num">31.4</td><td class="num">20.7</td><td>the capital of the United States of America</td></tr>
+      <tr class="win"><td>4-bit</td><td class="num">11.8</td><td class="num">10.5</td><td>Paris. The capital of France is Paris</td></tr>
+      <tr><td>Our download (8-bit)</td><td class="num">9.85</td><td class="num">—</td><td>Paris. The Eiffel Tower is</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>It helps everywhere:</strong> ternary 14× better, 4-bit almost back to the original.</li>
+    <li><strong>Ternary is still broken.</strong> This is strong evidence that a working ternary Llama needs real training, not smarter rounding.</li>
+    <li><strong>Useful by-product:</strong> a 4-bit Llama (~0.7 GB) nearly as good as our 1.3 GB file.</li>
+  </ul>
+  <p class="cap">Perplexity, lower is better. ~16 minutes per version on this laptop, no installs.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">So how could we get closer, cheaply?</span>
+  <p>Each idea attacks one of the problems above, without full retraining:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Idea</th><th>Fixes</th><th>Everyday picture</th><th>Cost here</th></tr></thead>
+    <tbody>
+      <tr><td>Better scales per block</td><td>Problem 1 (a bit)</td><td>A better exchange rate per page</td><td>Minutes</td></tr>
+      <tr><td>Keep the most important 1–2% of weights in 8-bit</td><td>Problem 1</td><td>Compressing a photo but keeping the faces sharp</td><td>Minutes</td></tr>
+      <tr><td>Fix errors while rounding (GPTQ-style)</td><td>Problems 1 and 3</td><td>Rounding prices so the bill's total still matches</td><td>~1 hour</td></tr>
+      <tr><td>More bits for early layers, ternary for late ones</td><td>Problem 2</td><td>Strong foundations, light top floors</td><td>Minutes</td></tr>
+      <tr><td>Retrain one layer at a time to copy the original</td><td>Problems 3 and 4</td><td>Renovating one floor at a time and checking it before the next</td><td>Hours to a day</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Realistic hope:</strong> about 1.6–2.5 bits per weight with perplexity around 15–30, a model that still writes sensible text at about a quarter of its size. Fully ternary <em>and</em> as good as the original is very unlikely without big training.</p>
+  <p class="cap">That target is my estimate from published results, not a measurement yet.</p>
+</section>
+
+</main><script src="nav.js"></script></body></html>

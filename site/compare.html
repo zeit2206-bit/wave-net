@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Light vs. a Standard Network</title><link rel="stylesheet" href="style.css"></head>
+<body data-page="compare.html"><main class="wrap">
+
+<header class="page">
+  <span class="label">Step 3 · Experiment · standard_net.py</span>
+  <h1>Light vs. a standard network</h1>
+  <p class="lead">Is 90.9% good? We trained two normal networks on the same digits to find out.</p>
+</header>
+
+<section class="block words">
+  <span class="label">In plain words · the terms on this page</span>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>What kind of thing</th><th>Everyday picture</th><th>Where it shows up</th></tr></thead>
+    <tbody><tr><td><strong>Linear</strong></td><td>Math idea</td><td>Mixing paint: many mixing steps equal one mixing step</td><td>Why light hit a ceiling</td></tr><tr><td><strong>Nonlinearity (if-then)</strong></td><td>Math idea</td><td>A bouncer: below the line, nobody passes</td><td>What standard neurons have</td></tr><tr><td><strong>Hidden layer 128</strong></td><td>A size</td><td>A team of 128 middle managers summarizing for the boss</td><td>Standard network: 2 of them</td></tr><tr><td><strong>118,282 numbers</strong></td><td>A count</td><td>How many knobs the network can tune</td><td>vs. 15,680 for light</td></tr></tbody>
+  </table></div>
+</section><!--words-->
+
+<section class="block test">
+  <span class="label">What we compared</span>
+  <ul>
+    <li><strong>Simplest network:</strong> one layer, no hidden neurons. Just "multiply and add".</li>
+    <li><strong>Standard network:</strong> two hidden layers of 128 neurons, each with an "if-then" step.</li>
+  </ul>
+  <p>Same 20,000 training digits, same 10,000 test digits, same 3 passes.</p>
+</section>
+
+<section class="block result">
+  <span class="label">Result</span>
+  <div class="bars">
+    <div class="bar"><span>Light<small>15,680 numbers</small></span><div class="t"><i style="width:90.9%;--c:#b26a12"></i></div><b>90.9%</b></div>
+    <div class="bar"><span>Simplest network<small>7,850 numbers</small></span><div class="t"><i style="width:90.8%;--c:#8d9893"></i></div><b>90.8%</b></div>
+    <div class="bar"><span>Standard network<small>118,282 numbers</small></span><div class="t"><i style="width:95.3%;--c:#2f7a4f"></i></div><b>95.3%</b></div>
+  </div>
+  <p><strong>Light tied with the simplest network.</strong> The standard network won by about 4.5 points.</p>
+</section>
+
+<section class="block why">
+  <span class="label">Why light hit a ceiling</span>
+  <p>Light passing through plates can only <strong>mix and steer</strong>. Mixing paint is a good picture: mix in several steps or in one step, you can get the same color. Steps of pure mixing <strong>collapse into one</strong>. That's called <mark>linear</mark>.</p>
+  <p>So 5 plates behaved like 1 clever plate. A standard neuron has an "if-then" step ("if the total is below zero, output zero"), called a <mark>nonlinearity</mark>. That step stops layers from collapsing, so each layer can build on the last.</p>
+  <p class="key" style="font-size:1rem">Light can mix, but it can't decide.</p>
+</section>
+
+<section class="plain">
+  <h2>The full comparison</h2>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Light</th><th>Standard network</th></tr></thead>
+    <tbody>
+      <tr><td>Does the work</td><td>Waves interfering</td><td>A chip multiplying</td></tr>
+      <tr><td>Correct (measured)</td><td class="num">90.9%</td><td class="num"><b>95.3%</b></td></tr>
+      <tr><td>Training on laptop</td><td class="num">116 s (simulated)</td><td class="num"><b>3 s</b></td></tr>
+      <tr><td>Can decide (if-then)?</td><td>Almost no</td><td><b>Yes</b></td></tr>
+      <tr><td>Speed per answer if built for real</td><td><b>Speed of light</b> (expected)</td><td>Micro- to milliseconds</td></tr>
+      <tr><td>Energy per answer if built for real</td><td><b>Almost none</b> (expected)</td><td>Electricity for every multiplication</td></tr>
+      <tr><td>Change it after building</td><td>No (reprint plates)</td><td><b>Yes</b> (load new weights)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">"Expected" rows are what a physical version would likely do, not something we measured.</p>
+</section>
+
+<section class="block idea">
+  <span class="label">Why the "light" model still used math</span>
+  <p>On the laptop, light had to be <em>calculated</em>, which is heavy math. In a real build, nobody calculates: light just travels, the way a thrown ball lands in the right place without solving equations. <strong>You do the math once to design the plates; after that, light does the work for free.</strong></p>
+</section>
+
+</main><script src="nav.js"></script></body></html>
